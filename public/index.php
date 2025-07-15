@@ -1,9 +1,16 @@
 <?php
 
-$name = 'dan';
+$value = "dados no cookie";
 
-function person(): void{
-    global $name;
-    echo $name . "\n";
+setcookie(
+  'TestCookie',
+    $value,
+    strtotime('+2 days'),
+);
+
+$cookieName = $_COOKIE["TestCookie"];
+if(isset($cookieName)) {
+    echo $cookieName;
+} else{
+    echo "{$cookieName} is not setted";
 }
-person();

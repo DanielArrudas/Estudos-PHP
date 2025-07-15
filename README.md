@@ -3,7 +3,7 @@
 ## **Rodar os arquivos**
 ### Temos duas maneiras:
 ### **Iniciando o servidor:**
-- php-S localhost:3000 -t public
+- php -S localhost:3000 -t public
 
 public é a pasta onde o servidor sera iniciado
 
@@ -295,6 +295,53 @@ Dentro desse cookie é possível guardar diversos tipos de dados
 
 É possível excluir um cookie manualmente
 
+$_COOKIE para resgatar um cookie, qualquer cookie enviado do cliente ao servidor será guardado nessa 
+
+setcookie(); Para criar um cookie
+
+Cookies são parte do Header HTTP, então o setcookie() deve ser chamado antes qualquer output ser enviado para o navegador.
+
+```php
+$value = "dados no cookie";
+
+setcookie(
+  'TestCookie',
+    $value,
+    time() + (2*24*60*60)
+);
+
+//Mostra o conteúdo do cookie "TestCookie"
+echo $_COOKIE["TestCookie"];
+
+// visualizar todos os cookies
+print_r($_COOKIE);
+```
+![img.png](img/img.png)
+Se olhar a data, é possível ver que vai vencer em dois dias
+
+**É possível usar também a função strtotime() para colocar a data de expiração.**
+
+### Para verificar se um cookie está setado
+```php
+$cookieName = $_COOKIE["name"];
+if(isset($cookieName)) {
+    echo $cookieName;
+} else{
+    echo "{$cookieName} is not set";
+}
+```
+Se o cookie não existir, ele também retorna um warning.
+
+### Remover cookie
+
+Para remover um cookie basta colocar o tempo negativo na parte de expiração, por exemplo:
+```php
+setcookie(
+  'TestCookie',
+    $value,
+    strtotime('-2 days'),
+);
+```
 ## $_SESSION
 
 Uma sessão também é guardada no navegador, porém não é guardado o valor da sessão e sim um id que será possível resgatar o valor da sessão quando chamada no servidor
