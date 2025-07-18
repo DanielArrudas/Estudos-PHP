@@ -429,15 +429,40 @@ ex: seusite.com.br?id=34&name=dan
 
 id é a variável que é passada através da url do site
 
+### Query string
+
+Após a URL adicionamos o primeiro valor usando a seguinte sintaxe:
+
+`?Chave=Valor`
+
+Para concatenar demais valores, usa-se &
+
+Ao dar um var dump no GET vai aparecer as variáveis da URI
+`var_dump($_GET);`
+
+Exemplo:
+
+`http://localhost:5000/?id=32&email=teste@teste.com.br`
+
+Vai retornar um array:
+```php
+array(2) {
+  ["id"]=>
+  string(2) "32"
+  ["email"]=>
+  string(18) "teste@teste.com.br"
+}
+```
+
 ## $_POST
 
-Serve para poder pegar os valores enviados através do header.
+Serve para poder pegar os valores enviados através do header, ou seja, não é de uma maneira que todos podem ver igual ao get
 
 ## $_REQUEST
 
 É possível pegar tanto uma query string quanto os valores passados através do header utilizando o post, logo, se quiser pegar tanto o get tanto o post utilize o request.
 
-$_SERVER
+## $_SERVER
 
 Consegue pegar o uri do site
 seusite.com.br/teste
@@ -446,6 +471,36 @@ uri seria o /teste
 Consegue pegar também a raiz do projeto
 
 Pegar o tipo de requisição (GET ou POST)
+
+Ao dar um var_dump é possível ver tudo o que consegue pegar do server:
+
+`var_dump($_SERVER);`
+
+Para identificar, por exemplo, se uma requisição é do tipo POST, você pode usar:
+
+```php
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+}
+```
+
+## Arquivos do formulário
+
+Sempre que trabalhar com arquivos em um formulário, usar "enctype="multipart/form-data"", caso não utilizar, nãos será possível enviar arquivos através de um formulário para outra página
+```html
+<form action="teste.php" method="post" enctype="multipart/form-data">
+    <label for="File">Arquivo:</label>
+    <input type="file" name="file" id="file" required>
+    <button type="submit">Cadastrar</button>
+</form>
+```
+```php
+<?php
+
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    var_dump($_FILES);
+}
+```
 
 ## Composer
 
@@ -461,22 +516,24 @@ A pasta vendor é onde o composer instala as dependências de terceiros e gera u
 
 A pasta vendor geralmente é descartável
 
+Esse comando lê as dependências do composer.json e instala:
+
 `composer install`
-Esse comando lê as dependências do composer.json e instala
 
 Para instalar apenas as dependências de produção:
 
 `composer install --no-dev`
 
-Para atualizar uma dependência de pacote
+Para atualizar uma dependência de pacote:
 
 `composer update`
 
 Para instalar um pacote:
 
 `composer require vlucas/phpdotenv`
-- Se escrever apenas "composer require" é possível pesquisar uma lista de pacotes
 
+- Se escrever apenas "composer require" é possível pesquisar uma lista de pacotes   
+ 
 Para remover um pacote pelo nome:
 
 `composer remove pacote/pacote`

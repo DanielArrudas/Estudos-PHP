@@ -1,8 +1,15 @@
-<?php
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>
+</head>
+<body>
+    <form action="teste.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="img">
+        <button type="submit">Cadastrar</button>
+    </form>
 
-require '../vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-var_dump($_ENV);
+</body>
+</html>
