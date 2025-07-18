@@ -6,8 +6,13 @@
     <title>Forms</title>
 </head>
 <body>
-    <form action="teste.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="img">
+    <form action="teste.php" method="post">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
         <button type="submit">Cadastrar</button>
     </form>
 

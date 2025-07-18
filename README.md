@@ -454,6 +454,10 @@ array(2) {
 }
 ```
 
+### Sistema de busca
+
+Para sistemas de busca, utilize o método GET
+
 ## $_POST
 
 Serve para poder pegar os valores enviados através do header, ou seja, não é de uma maneira que todos podem ver igual ao get
@@ -537,3 +541,24 @@ Para instalar um pacote:
 Para remover um pacote pelo nome:
 
 `composer remove pacote/pacote`
+
+## Sanitizadores e Validates
+
+Filtros sanitize são para filtrar o que vai receber do formulário, evitando um ataque malicioso do usuário.
+
+A função `filter_var()` é aplicada para sanitizar texto.
+
+A função `filter_input()` é aplicada para sanitizar o input de um formulário.
+
+```php
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+}
+```
+
+Remove todos os caracteres exceto letras, dígitos e `!#$%&'*+-=``?^_{|}~@.[]`:
+
+`FILTER_SANITIZE_EMAIL`
+
+
