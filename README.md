@@ -344,8 +344,44 @@ setcookie(
 ```
 ## $_SESSION
 
-Uma sessão também é guardada no navegador, porém não é guardado o valor da sessão e sim um id que será possível resgatar o valor da sessão quando chamada no servidor
+Uma sessão também é guardada no navegador, diferente dos cookies que são guardados no computador do usuário, a sessão é guardada no servidor.
 
+Quando uma sessão é iniciada, o PHP cria um identificador único para essa sessão e o envia ao navegador do usuário através de um cookie chamado "PHPSESSID".
+
+É útil quando deseja guardar informação relacionada a uma sessão específica de usuário, como login, carrinho de compras, preferências de usuário, etc.
+
+Para iniciar uma sessão, você deve chamar a função session_start() no início do seu script PHP. Isso cria ou retoma uma sessão existente.
+
+Para salvar um valor numa sessão utilize $_SESSION['nome_da_sessao']
+
+```php
+session_start();
+$_SESSION['username'] = 'Daniel';
+//Daniel é o valor que será guardado na variável de sessão 'username'
+```
+```php
+session_start();
+if(!isset($_SESSION['count'])){
+    $_SESSION['count'] = 0;
+} else {
+    $_SESSION['count']++;
+}
+
+echo $_SESSION['count'];
+```
+para excluir uma sessão específica:
+```php
+unset($_SESSION['name']);
+```
+Para excluir todas as sessões:
+```php
+session_destroy();
+```
+
+para criar um novo id:
+```php
+session_regenerate_id();
+```
 ## $_ENV
 
 ## $_FILES

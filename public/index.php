@@ -1,16 +1,6 @@
 <?php
-
-$value = "dados no cookie";
-
-setcookie(
-  'TestCookie',
-    $value,
-    strtotime('+2 days'),
-);
-
-$cookieName = $_COOKIE["TestCookie"];
-if(isset($cookieName)) {
-    echo $cookieName;
-} else{
-    echo "{$cookieName} is not setted";
-}
+session_start();
+session_regenerate_id();
+require 'teste.php';
+$_SESSION['name'] = 'dan';
+$_SESSION['person'] = ['name' => 'dan', 'age' => 20, 'city' => 'São Paulo'];
