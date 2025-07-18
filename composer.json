@@ -1,0 +1,17 @@
+{
+    "name": "arrud/estudos-php",
+    "autoload": {
+        "psr-4": {
+            "Arrud\\EstudosPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DanielArrudas",
+            "email": "arrudasmacedo@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

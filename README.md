@@ -342,6 +342,7 @@ setcookie(
     strtotime('-2 days'),
 );
 ```
+
 ## $_SESSION
 
 Uma sessão também é guardada no navegador, diferente dos cookies que são guardados no computador do usuário, a sessão é guardada no servidor.
@@ -382,7 +383,37 @@ para criar um novo id:
 ```php
 session_regenerate_id();
 ```
+
 ## $_ENV
+
+Instalação:
+
+Tudo está no github vlucas/phpdotenv
+
+`composer require vlucas/phpdotenv` 
+
+É importante criar um .env.example para demonstrar quais variáveis são necessárias (não atribuir valor real a essas variáveis)
+
+O arquivo .env deve ficar dentro da pasta /public
+
+É uma convenção colocar todas as letras maiúsculas nas variáveis de ambiente
+
+um exemplo da .env
+
+```
+DATABASE=teste
+HOST=localhost
+PASSWORD=
+USER=root
+```
+E como ficaria o .env.example
+
+```
+DATABASE=
+HOST=
+PASSWORD=
+USER=
+```
 
 ## $_FILES
 
@@ -415,3 +446,37 @@ uri seria o /teste
 Consegue pegar também a raiz do projeto
 
 Pegar o tipo de requisição (GET ou POST)
+
+## Composer
+
+`composer init`
+
+composer.json é onde estão os require do projeto
+
+composer.lock trava as versões baixadas dos pacotes que tem na aplicação
+
+A pasta vendor é onde o composer instala as dependências de terceiros e gera um autoload principal onde será importado no nosso arquivo principal da aplicação e ter acesso a todas as dependências listadas
+
+`require '../vendor/autoload.php';`
+
+A pasta vendor geralmente é descartável
+
+`composer install`
+Esse comando lê as dependências do composer.json e instala
+
+Para instalar apenas as dependências de produção:
+
+`composer install --no-dev`
+
+Para atualizar uma dependência de pacote
+
+`composer update`
+
+Para instalar um pacote:
+
+`composer require vlucas/phpdotenv`
+- Se escrever apenas "composer require" é possível pesquisar uma lista de pacotes
+
+Para remover um pacote pelo nome:
+
+`composer remove pacote/pacote`
