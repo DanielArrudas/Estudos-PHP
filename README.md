@@ -562,3 +562,21 @@ Remove todos os caracteres exceto letras, dígitos e `!#$%&'*+-=``?^_{|}~@.[]`:
 `FILTER_SANITIZE_EMAIL`
 
 
+## Declare statemente (strict_type directive)
+
+Se o desenvolvedor quiser ter tipos estritos no código, sem que o php faça uma conversão de tipos por si só, utilize `declare(strict_type=1);`
+
+No modo estrito, apenas valores correspondentes ao tipo esperado serão aceitos, ex:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+function sum(int $a, int $b): int{
+        return $a + $b;
+}
+
+echo sum( '1',1);
+```
+Dessa forma, ele vai dar erro "Uncaught TypeError", por estar espero o tipo int, caso não tenha o declare, o php faz o cast automático para int.
