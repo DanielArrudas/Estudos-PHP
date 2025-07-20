@@ -595,3 +595,60 @@ $operators = [2, 3];
 echo add(1, ...$operators);
 ?>
 ```
+
+É possível fazer o contrário também:
+```php
+function sum(...$numbers) {
+    return array_sum($numbers);
+}
+echo sum(1, 2, 3, 4);
+```
+
+## Sistema de arquivos
+
+Temos algumas funções que usam o sistema de arquivo:
+
+`scandir(__DIR__);`
+
+scandir lista arquivos e diretórios dentro do path especificado e retorna um array de arquivos e diretórios daquele diretório.
+
+`mkdir();`
+
+```php
+function mkdir(
+    string $directory,
+    int $permissions = 0777,
+    bool $recursive = false,
+    resource|null $context = null
+): bool
+```
+Faz uma tentativa de criação de diretório baseado no nome especificado na string "$directory";
+
+a permissão por padrão é 0777 que seria total permissão;
+
+se recursivo for true todos os diretórios "pais" (parent directories) do diretório especificado será criado com as mesmas permissões, ou seja, se deseja criar a pasta teste2 dentro da pasta teste, porém a pasta teste não existe, ative a recursão e criará os dois, ex:
+
+```php
+mkdir('teste/teste2', recursive: true);
+```
+
+retorna falso se não for possível a criação do diretório.
+ex:
+
+```php
+mkdir('teste');
+```
+
+`rmdir();`
+
+rmdir apaga o diretório especificado. ex:
+
+```php
+rmdir('teste');
+```
+
+## Upload de arquivos]
+
+Mexer com upload de arquivos é algo bastante complicado, uma vez que deve tratar diversos erros e possíveis problemas vindo do html, no commit "Add file upload form and handling logic; include error handling and MIME type validation" mostra um pouco de como é feito no files.php.
+
+no https://www.php.net/manual/en/features.file-upload.php um usuário postou o exato mesmo código que lida com todos os problemas.
