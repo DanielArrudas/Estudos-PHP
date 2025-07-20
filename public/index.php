@@ -1,9 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
-function sum(int $a, int $b): int{
-        return $a + $b;
+function add($a, $b, $c) {
+    return $a + $b + $c;
 }
 
-echo sum( 1,1);
+$operators = [2, 3];
+echo add(1, ...$operators);
+?>

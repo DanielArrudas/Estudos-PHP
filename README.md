@@ -580,3 +580,18 @@ function sum(int $a, int $b): int{
 echo sum( '1',1);
 ```
 Dessa forma, ele vai dar erro "Uncaught TypeError", por estar espero o tipo int, caso não tenha o declare, o php faz o cast automático para int.
+
+## Argument unpacking via ...
+
+"Argument unpacking" seria desempacotar algum argumento, arrays e "traversable objects" podem ser desempacotados em uma lista de argumentos ao chamar funções usando o splat operator (...)
+
+```php
+<?php
+function add($a, $b, $c) {
+    return $a + $b + $c;
+}
+
+$operators = [2, 3];
+echo add(1, ...$operators);
+?>
+```
