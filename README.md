@@ -1,127 +1,177 @@
-# INÍCIO
-(Arquivo criado para anotar o que achar necessário durante meus estudos em PHP)
-## **Rodar os arquivos**
-### Temos duas maneiras:
-### **Iniciando o servidor:**
-- php -S localhost:3000 -t public
+# PHP Procedural Learning Repository
 
-public é a pasta onde o servidor sera iniciado
+This repository was created to document everything I learn about procedural PHP.
 
-### Rodando via terminal
-- php arquivo.php
+---
 
-## **INCLUDE E REQUIRE DE ARQUIVOS**
+## 📚 Table of Contents
+
+1. [Running the Files](#running-the-files)
+2. [Including and Requiring Files](#including-and-requiring-files)
+3. [Variables](#variables)
+4. [References (Pointers)](#references-pointers)
+5. [Constants](#constants)
+6. [Magic Constants](#magic-constants)
+7. [Truthy and Falsy Values](#truthy-and-falsy-values)
+8. [String Functions](#string-functions)
+9. [Number Rounding](#number-rounding)
+10. [Arrays](#arrays)
+11. [Match Expression (Conditional)](#match-expression-conditional)
+12. [Anonymous Functions](#anonymous-functions)
+13. [Callbacks](#callbacks)
+14. [Superglobals](#superglobals)
+15. [Forms and File Uploads](#forms-and-file-uploads)
+16. [Composer](#composer)
+17. [Sanitizers and Validators](#sanitizers-and-validators)
+18. [Strict Types](#strict-types)
+19. [Argument Unpacking](#argument-unpacking)
+20. [Filesystem Functions](#filesystem-functions)
+21. [File Upload Notes](#file-upload-notes)
+
+---
+
+## Running the Files
+
+There are two ways to run PHP files:
+
+### 1. Starting the built-in PHP server
+
+```bash
+php -S localhost:3000 -t public
+```
+
+> `public` is the folder where the server will start.
+
+### 2. Running via terminal
+
+```bash
+php filename.php
+```
+
+---
+
+## Including and Requiring Files
+
 ```php
-<?php
-include './teste.php';
-
+include './test.php';
 echo $name;
 ```
-```php
-<?php
-require './teste.php';
 
+```php
+require './test.php';
 echo $name;
 ```
-### Qual a diferença?
-include, caso não exista o arquivo requisitado, ele da erro, porém continua executando o programa, já no require, ele para a execução.
 
-### include_once
-Ele é chamado apenas uma vez, não importa quantas vezes é colocado o include no código, ou seja, você tem certeza que ele é chamado apenas uma vez.
+### Differences
 
-### require_once
-É a mesma coisa, porém quando houver um erro, ele apresenta apenas um erro.
+- `include` gives a warning if the file is not found but continues execution.
+- `require` gives a fatal error and stops execution if the file is missing.
 
-## Variáveis
-Temos 7 tipos:
+### `include_once`
 
-string:
+Ensures the file is included only once, even if included multiple times in code.
+
+### `require_once`
+
+Same as `include_once`, but stops execution if the file has an error.
+
+---
+
+## Variables
+
+There are 7 basic types:
+
+### string
+
 ```php
-gettype('aaa');
-//retorno:
-string
+gettype('aaa'); // returns: string
 ```
-**É válido colocar variáveis entre chaves quando escritas dentro de strings.**
+
 ```php
 $name = "Daniel";
-$lastName = "Macedo";
+$lastName = "Arrudas";
 $fullName = "{$name} {$lastName}";
 ```
 
-numbers - integers
-```php
-gettype('aaa');
-//retorno:
-string
-```
-float(double)
-```php
-gettype(12.32);
-//retorno:
-double3
-```
-booleans
-```php
-gettype(true);
-//retorno:
-boolean
-```
-É bom deixar claro que booleano retorna 1 quando true e nada (null) quando falso.
-arrays
-```php
-gettype(['aa', 12]);
-//retorno:
-array
-```
-object
-```php
-class Person{
-}
-echo gettype(new Person);
-//retorno:
-string
-```
-null
-```php
-gettype(null);
-//retorno:
-NULL
-```
-### Padrão de nome de variável
-#### camelCase:
-myName
-  
-#### snake_case:
-my_name
+### integer
 
-## Ponteiro
-Passa o valor como referência, a posição de memória da variável
+```php
+gettype(5); // returns: integer
+```
+
+### float (double)
+
+```php
+gettype(12.32); // returns: double
+```
+
+### boolean
+
+```php
+gettype(true); // returns: boolean
+```
+
+> `true` outputs 1; `false` returns an empty string (null).
+
+### array
+
+```php
+gettype(['aa', 12]); // returns: array
+```
+
+### object
+
+```php
+class Person {}
+echo gettype(new Person()); // returns: object
+```
+
+### null
+
+```php
+gettype(null); // returns: NULL
+```
+
+### Variable Naming Conventions
+
+- `camelCase`: `myName`
+- `snake_case`: `my_name`
+
+---
+
+## References (Pointers)
+
+Passing a variable by reference:
+
 ```php
 $myName = 'dan';
 $name = &$myName;
 $myName = 'joao';
 echo $myName;
 echo $name;
-//output:
-joaojoao
+// output: joaojoao
 ```
 
-## Constantes
+---
 
-Por convenção, constantes são sempre definidas em maiúsculo
+## Constants
 
-Definindo uma constante com "const" não funciona dentro de escopos, com "define" funciona.
-ex:
+Constants are usually written in uppercase.
+
+### Defining Constants:
+
 ```php
-if(true){
+if (true) {
     define("NAME", "dan");
 }
 echo NAME;
 ```
-Isso mostra que constantes tem escopo global.
 
+> `define()` works in conditional blocks; `const` does not. Constants are globally scoped.
 
-## MAGIC CONSTANTS
+---
+
+## Magic Constants
 
 ```php
 __FUNCTION__
@@ -129,120 +179,118 @@ __METHOD__
 __LINE__
 __FILE__
 ```
-É basicamente uma constante que altera o valor baseado no contexto, por exemplo o function e o method retornam o nome da função/método dela
 
-O line retorna o número da linha que ela foi chamada.
+- `__FUNCTION__`, `__METHOD__`: Return the name of the function/method.
+- `__LINE__`: Returns the current line number.
+- `__FILE__`: Returns the full path of the file.
 
-O file retorna o diretório que o arquivo está.
+### Other Useful Constants
 
-Existem diversas constantes mágicas.
+- `DIRECTORY_SEPARATOR`: Platform-independent directory separator (`/` or `\`).
 
-### Mais constantes
+### Check if a constant exists:
 
-DIRECTORY_SEPARATOR
-
-seria basicamente a "/"
-
-#### verificar se uma constante existe
 ```php
-if(defined('CONSTANTE_NAME')){
-
-}
-```
-```php
-$cons = get_defined_constants(true); //mostra todas as constantes definidas no php
-var_dump($cons); //pega o conteúdo de uma variável
+if (defined('CONSTANT_NAME')) {}
 ```
 
-## Truthy e Falsy
-Eles pegam valores reais e podem transformar em falso e verdadeiro, como:
 ```php
-$nome = "dan";
-echo !!$nome;
-
-//vai retornar verdadeiro
+$consts = get_defined_constants(true);
+var_dump($consts);
 ```
 
-### Falsy
+---
 
-Falsy são valores que se comportam como valores booleanos falsos, mas não são booleanos.
-exemplos:
-null
+## Truthy and Falsy Values
 
-0
+```php
+$name = "dan";
+echo !!$name; // returns true
+```
 
-0.0
+### Falsy Values
 
-"0"
+- `null`
+- `0`, `0.0`
+- `"0"`, `""`
+- `[]`
 
-""
+### Truthy Values
 
-array()
+Everything else.
 
-## Truthy
-Truthy é todo o resto
+---
 
-## Funções para string
+## String Functions
 
-strlen(); //tamanho da string
+```php
+strlen();       // string length
+substr();       // substring
+str_contains(); // check if substring exists
+```
 
-substr(); //separa uma string
+---
 
-str_contains(); //olha se contém algo na string
+## Number Rounding
 
-## Arredondar número
+```php
+ceil();  // rounds up
+floor(); // rounds down
+```
 
-ceil(); //arredonda para cima
+---
 
-floor(); //arredonda para baixo
+## Arrays
 
-## Array
+### Add to end:
 
-### Adicionar valores ao final de um array
-array_push($array, elemento);
+```php
+array_push($array, $item);
+```
 
-Essa função retorna um int com o tamanho do array
+Use `$array[] = $item;` for one item (faster).
 
-Se for adicionar apenas um elemento no array, utilize:
-$array = elemento; para evitar overhead
+### Add to beginning:
 
-### Adicionar valores ao início de um array
+```php
+array_unshift($array, $item);
+```
 
-array_unshift();
+### Associative Array:
 
-### Array associativo
 ```php
 $person = ['name' => 'dan', 'age' => 20];
-//basicamente um array com chave valor
 ```
-### Array multidimensional
+
+### Multidimensional Array:
+
 ```php
-$person = 
-[
-    'name' => 'dan', 
-    'age' => 20, 
+$person = [
+    'name' => 'dan',
+    'age' => 20,
     'documents' => [
-        'cpf' => '112312321', 
+        'cpf' => '112312321',
         'rg' => '31231'
     ]
 ];
 ```
 
-## Match (Condicional)
+---
+
+## Match Expression (Conditional)
 
 ```php
 $pessoa = "leo";
-
 $returnValue = match ($pessoa) {
-    "dan" => "essa pessoa é daniel",
-    "joao" => "essa pessoa é joao",
-    "caio", "leo" => "essa pessoa é caio ou leo",
-    default => "essa pessoa nao ta aqui nao",
+    "dan" => "This person is Daniel",
+    "joao" => "This person is João",
+    "caio", "leo" => "This person is Caio or Leo",
+    default => "Person not found",
 };
 ```
+
 ```php
 $age = 18;
-
 $output = match (true) {
     $age < 2 => "Baby",
     $age < 13 => "Child",
@@ -252,153 +300,75 @@ $output = match (true) {
 };
 ```
 
-O match é parecido com o switch, porém tem algumas diferenças:
-- ele faz comparação forte (===) já o switch faz comparação fraca (==)
-- match retorna um valor
-- match não segue para os próximos cases igual o switch
+### Differences from `switch`
 
-Comparado ao switch, match é mais seguro uma vez que não necessitam de break e são mais conciso.
+- Uses strict comparison (`===`)
+- Returns a value
+- More concise and safe
 
-## Anonymous Function
+---
+
+## Anonymous Functions
 
 ```php
-
-function teste($name){
-    $person = function() use ($name){
-      return $name;
+function test($name) {
+    $person = function() use ($name) {
+        return $name;
     };
     return $person;
 }
-
-echo teste("dan")();
+echo test("dan")();
 ```
+
+---
+
 ## Callbacks
 
-São funções passadas como parâmetro para outras funções
+Functions passed as parameters:
 
-Verificar realmente se é callback
-
-
+```php
 is_callable($callback);
+call_user_func($callback);
+```
 
-call_user_func();
+---
 
-## Super Globais
+## Superglobals
 
-### $_COOKIE
+### `$_COOKIE`
 
-Cookie é um valor guardado no navegador que é possível ser resgatado no sistema
-
-Criar um cookie você coloca um prazo de validade nele, uma data limite
-
-Dentro desse cookie é possível guardar diversos tipos de dados
-
-É possível excluir um cookie manualmente
-
-$_COOKIE para resgatar um cookie, qualquer cookie enviado do cliente ao servidor será guardado nessa 
-
-setcookie(); Para criar um cookie
-
-Cookies são parte do Header HTTP, então o setcookie() deve ser chamado antes qualquer output ser enviado para o navegador.
+- Stores data in the user's browser.
+- Must be set before any output.
 
 ```php
-$value = "dados no cookie";
-
-setcookie(
-  'TestCookie',
-    $value,
-    time() + (2*24*60*60)
-);
-
-//Mostra o conteúdo do cookie "TestCookie"
+setcookie('TestCookie', 'value', time() + 2*24*60*60);
 echo $_COOKIE["TestCookie"];
-
-// visualizar todos os cookies
-print_r($_COOKIE);
 ```
-![img.png](img/img.png)
-Se olhar a data, é possível ver que vai vencer em dois dias
 
-**É possível usar também a função strtotime() para colocar a data de expiração.**
+- To delete:
 
-### Para verificar se um cookie está setado
 ```php
-$cookieName = $_COOKIE["name"];
-if(isset($cookieName)) {
-    echo $cookieName;
-} else{
-    echo "{$cookieName} is not set";
-}
-```
-Se o cookie não existir, ele também retorna um warning.
-
-### Remover cookie
-
-Para remover um cookie basta colocar o tempo negativo na parte de expiração, por exemplo:
-```php
-setcookie(
-  'TestCookie',
-    $value,
-    strtotime('-2 days'),
-);
+setcookie('TestCookie', '', strtotime('-2 days'));
 ```
 
-## $_SESSION
-
-Uma sessão também é guardada no navegador, diferente dos cookies que são guardados no computador do usuário, a sessão é guardada no servidor.
-
-Quando uma sessão é iniciada, o PHP cria um identificador único para essa sessão e o envia ao navegador do usuário através de um cookie chamado "PHPSESSID".
-
-É útil quando deseja guardar informação relacionada a uma sessão específica de usuário, como login, carrinho de compras, preferências de usuário, etc.
-
-Para iniciar uma sessão, você deve chamar a função session_start() no início do seu script PHP. Isso cria ou retoma uma sessão existente.
-
-Para salvar um valor numa sessão utilize $_SESSION['nome_da_sessao']
+### `$_SESSION`
 
 ```php
 session_start();
 $_SESSION['username'] = 'Daniel';
-//Daniel é o valor que será guardado na variável de sessão 'username'
 ```
-```php
-session_start();
-if(!isset($_SESSION['count'])){
-    $_SESSION['count'] = 0;
-} else {
-    $_SESSION['count']++;
-}
 
-echo $_SESSION['count'];
-```
-para excluir uma sessão específica:
+To destroy:
+
 ```php
-unset($_SESSION['name']);
-```
-Para excluir todas as sessões:
-```php
+unset($_SESSION['key']);
 session_destroy();
-```
-
-para criar um novo id:
-```php
 session_regenerate_id();
 ```
 
-## $_ENV
+### `$_ENV`
 
-Instalação:
-
-Tudo está no github vlucas/phpdotenv
-
-`composer require vlucas/phpdotenv` 
-
-É importante criar um .env.example para demonstrar quais variáveis são necessárias (não atribuir valor real a essas variáveis)
-
-O arquivo .env deve ficar dentro da pasta /public
-
-É uma convenção colocar todas as letras maiúsculas nas variáveis de ambiente
-
-um exemplo da .env
+Use `vlucas/phpdotenv` with Composer. `.env` example:
 
 ```
 DATABASE=teste
@@ -406,249 +376,146 @@ HOST=localhost
 PASSWORD=
 USER=root
 ```
-E como ficaria o .env.example
 
-```
-DATABASE=
-HOST=
-PASSWORD=
-USER=
-```
+`.env.example` should show required keys without values.
 
-## $_FILES
+### `$_FILES`
 
-### Pega um arquivo enviado de um formulário
+Handles file uploads via forms.
 
-Dentro de um formulário é possível criar um input do tipo file e é com o $_FILES que esse arquivo é recebido
+### `$_GET`
 
-## $_GET
-
-Serve para poder pegar as variáveis do URL
-
-ex: seusite.com.br?id=34&name=dan
-
-id é a variável que é passada através da url do site
-
-### Query string
-
-Após a URL adicionamos o primeiro valor usando a seguinte sintaxe:
-
-`?Chave=Valor`
-
-Para concatenar demais valores, usa-se &
-
-Ao dar um var dump no GET vai aparecer as variáveis da URI
-`var_dump($_GET);`
-
-Exemplo:
-
-`http://localhost:5000/?id=32&email=teste@teste.com.br`
-
-Vai retornar um array:
-```php
-array(2) {
-  ["id"]=>
-  string(2) "32"
-  ["email"]=>
-  string(18) "teste@teste.com.br"
-}
-```
-
-### Sistema de busca
-
-Para sistemas de busca, utilize o método GET
-
-## $_POST
-
-Serve para poder pegar os valores enviados através do header, ou seja, não é de uma maneira que todos podem ver igual ao get
-
-## $_REQUEST
-
-É possível pegar tanto uma query string quanto os valores passados através do header utilizando o post, logo, se quiser pegar tanto o get tanto o post utilize o request.
-
-## $_SERVER
-
-Consegue pegar o uri do site
-seusite.com.br/teste
-uri seria o /teste
-
-Consegue pegar também a raiz do projeto
-
-Pegar o tipo de requisição (GET ou POST)
-
-Ao dar um var_dump é possível ver tudo o que consegue pegar do server:
-
-`var_dump($_SERVER);`
-
-Para identificar, por exemplo, se uma requisição é do tipo POST, você pode usar:
+Retrieves values from the URL:
 
 ```php
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
-}
+http://localhost/?id=32&email=test@example.com
 ```
 
-## Arquivos do formulário
+```php
+var_dump($_GET);
+```
 
-Sempre que trabalhar com arquivos em um formulário, usar "enctype="multipart/form-data"", caso não utilizar, nãos será possível enviar arquivos através de um formulário para outra página
+### `$_POST`
+
+Gets data from submitted forms via POST.
+
+### `$_REQUEST`
+
+Combines `$_GET`, `$_POST`, and `$_COOKIE`.
+
+### `$_SERVER`
+
+Provides info about the server and request:
+
+```php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {}
+```
+
+---
+
+## Forms and File Uploads
+
+Use `enctype="multipart/form-data"` in the form:
+
 ```html
-<form action="teste.php" method="post" enctype="multipart/form-data">
-    <label for="File">Arquivo:</label>
-    <input type="file" name="file" id="file" required>
-    <button type="submit">Cadastrar</button>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Upload</button>
 </form>
 ```
-```php
-<?php
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
+```php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     var_dump($_FILES);
 }
 ```
 
+---
+
 ## Composer
 
-`composer init`
+```bash
+composer init
+composer install
+composer require package/name
+composer update
+composer remove package/name
+```
 
-composer.json é onde estão os require do projeto
+- `vendor/` contains third-party dependencies.
+- `composer.lock` locks versions.
+- `autoload.php` is the loader file.
 
-composer.lock trava as versões baixadas dos pacotes que tem na aplicação
+---
 
-A pasta vendor é onde o composer instala as dependências de terceiros e gera um autoload principal onde será importado no nosso arquivo principal da aplicação e ter acesso a todas as dependências listadas
+## Sanitizers and Validators
 
-`require '../vendor/autoload.php';`
-
-A pasta vendor geralmente é descartável
-
-Esse comando lê as dependências do composer.json e instala:
-
-`composer install`
-
-Para instalar apenas as dependências de produção:
-
-`composer install --no-dev`
-
-Para atualizar uma dependência de pacote:
-
-`composer update`
-
-Para instalar um pacote:
-
-`composer require vlucas/phpdotenv`
-
-- Se escrever apenas "composer require" é possível pesquisar uma lista de pacotes   
- 
-Para remover um pacote pelo nome:
-
-`composer remove pacote/pacote`
-
-## Sanitizadores e Validates
-
-Filtros sanitize são para filtrar o que vai receber do formulário, evitando um ataque malicioso do usuário.
-
-A função `filter_var()` é aplicada para sanitizar texto.
-
-A função `filter_input()` é aplicada para sanitizar o input de um formulário.
+Use `filter_var()` and `filter_input()`:
 
 ```php
-if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+```
+
+---
+
+## Strict Types
+
+Use `declare(strict_types=1);` to enforce type checking:
+
+```php
+function sum(int $a, int $b): int {
+    return $a + $b;
 }
 ```
 
-Remove todos os caracteres exceto letras, dígitos e `!#$%&'*+-=``?^_{|}~@.[]`:
+Without `strict_types`, PHP would cast `'1'` to `1` automatically.
 
-`FILTER_SANITIZE_EMAIL`
+---
 
+## Argument Unpacking
 
-## Declare statemente (strict_type directive)
-
-Se o desenvolvedor quiser ter tipos estritos no código, sem que o php faça uma conversão de tipos por si só, utilize `declare(strict_type=1);`
-
-No modo estrito, apenas valores correspondentes ao tipo esperado serão aceitos, ex:
+Unpacking arguments:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-function sum(int $a, int $b): int{
-        return $a + $b;
-}
-
-echo sum( '1',1);
-```
-Dessa forma, ele vai dar erro "Uncaught TypeError", por estar espero o tipo int, caso não tenha o declare, o php faz o cast automático para int.
-
-## Argument unpacking via ...
-
-"Argument unpacking" seria desempacotar algum argumento, arrays e "traversable objects" podem ser desempacotados em uma lista de argumentos ao chamar funções usando o splat operator (...)
-
-```php
-<?php
 function add($a, $b, $c) {
     return $a + $b + $c;
 }
-
 $operators = [2, 3];
 echo add(1, ...$operators);
-?>
 ```
 
-É possível fazer o contrário também:
+Packing arguments:
+
 ```php
 function sum(...$numbers) {
     return array_sum($numbers);
 }
-echo sum(1, 2, 3, 4);
+echo sum(1, 2, 3);
 ```
 
-## Sistema de arquivos
+---
 
-Temos algumas funções que usam o sistema de arquivo:
-
-`scandir(__DIR__);`
-
-scandir lista arquivos e diretórios dentro do path especificado e retorna um array de arquivos e diretórios daquele diretório.
-
-`mkdir();`
+## Filesystem Functions
 
 ```php
-function mkdir(
-    string $directory,
-    int $permissions = 0777,
-    bool $recursive = false,
-    resource|null $context = null
-): bool
-```
-Faz uma tentativa de criação de diretório baseado no nome especificado na string "$directory";
-
-a permissão por padrão é 0777 que seria total permissão;
-
-se recursivo for true todos os diretórios "pais" (parent directories) do diretório especificado será criado com as mesmas permissões, ou seja, se deseja criar a pasta teste2 dentro da pasta teste, porém a pasta teste não existe, ative a recursão e criará os dois, ex:
-
-```php
-mkdir('teste/teste2', recursive: true);
+scandir(__DIR__); // lists files in current directory
+mkdir('folder', recursive: true); // creates directories
+rmdir('folder'); // removes directories
 ```
 
-retorna falso se não for possível a criação do diretório.
-ex:
+---
 
-```php
-mkdir('teste');
-```
+## File Upload Notes
 
-`rmdir();`
+Handling file uploads requires validation and error checks. See the commit: **"Add file upload form and handling logic; include error handling and MIME type validation"**
 
-rmdir apaga o diretório especificado. ex:
+Also, check: [PHP Manual - File Uploads](https://www.php.net/manual/en/features.file-upload.php)
 
-```php
-rmdir('teste');
-```
+---
 
-## Upload de arquivos]
+End of Guide.
 
-Mexer com upload de arquivos é algo bastante complicado, uma vez que deve tratar diversos erros e possíveis problemas vindo do html, no commit "Add file upload form and handling logic; include error handling and MIME type validation" mostra um pouco de como é feito no files.php.
+---
 
-no https://www.php.net/manual/en/features.file-upload.php um usuário postou o exato mesmo código que lida com todos os problemas.
+> Prepared by Daniel Arrudas
