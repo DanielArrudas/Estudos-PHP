@@ -64,8 +64,8 @@ echo $name;
 
 ### Differences
 
-- `include` gives a warning if the file is not found but continues execution.
-- `require` gives a fatal error and stops execution if the file is missing.
+-   `include` gives a warning if the file is not found but continues execution.
+-   `require` gives a fatal error and stops execution if the file is missing.
 
 ### `include_once`
 
@@ -134,8 +134,8 @@ gettype(null); // returns: NULL
 
 ### Variable Naming Conventions
 
-- `camelCase`: `myName`
-- `snake_case`: `my_name`
+-   `camelCase`: `myName`
+-   `snake_case`: `my_name`
 
 ---
 
@@ -180,13 +180,13 @@ __LINE__
 __FILE__
 ```
 
-- `__FUNCTION__`, `__METHOD__`: Return the name of the function/method.
-- `__LINE__`: Returns the current line number.
-- `__FILE__`: Returns the full path of the file.
+-   `__FUNCTION__`, `__METHOD__`: Return the name of the function/method.
+-   `__LINE__`: Returns the current line number.
+-   `__FILE__`: Returns the full path of the file.
 
 ### Other Useful Constants
 
-- `DIRECTORY_SEPARATOR`: Platform-independent directory separator (`/` or `\`).
+-   `DIRECTORY_SEPARATOR`: Platform-independent directory separator (`/` or `\`).
 
 ### Check if a constant exists:
 
@@ -210,10 +210,10 @@ echo !!$name; // returns true
 
 ### Falsy Values
 
-- `null`
-- `0`, `0.0`
-- `"0"`, `""`
-- `[]`
+-   `null`
+-   `0`, `0.0`
+-   `"0"`, `""`
+-   `[]`
 
 ### Truthy Values
 
@@ -302,9 +302,9 @@ $output = match (true) {
 
 ### Differences from `switch`
 
-- Uses strict comparison (`===`)
-- Returns a value
-- More concise and safe
+-   Uses strict comparison (`===`)
+-   Returns a value
+-   More concise and safe
 
 ---
 
@@ -337,15 +337,15 @@ call_user_func($callback);
 
 ### `$_COOKIE`
 
-- Stores data in the user's browser.
-- Must be set before any output.
+-   Stores data in the user's browser.
+-   Must be set before any output.
 
 ```php
 setcookie('TestCookie', 'value', time() + 2*24*60*60);
 echo $_COOKIE["TestCookie"];
 ```
 
-- To delete:
+-   To delete:
 
 ```php
 setcookie('TestCookie', '', strtotime('-2 days'));
@@ -419,7 +419,7 @@ Use `enctype="multipart/form-data"` in the form:
 
 ```html
 <form action="upload.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" required>
+    <input type="file" name="file" required />
     <button type="submit">Upload</button>
 </form>
 ```
@@ -442,9 +442,9 @@ composer update
 composer remove package/name
 ```
 
-- `vendor/` contains third-party dependencies.
-- `composer.lock` locks versions.
-- `autoload.php` is the loader file.
+-   `vendor/` contains third-party dependencies.
+-   `composer.lock` locks versions.
+-   `autoload.php` is the loader file.
 
 ---
 
