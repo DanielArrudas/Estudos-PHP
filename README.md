@@ -1,6 +1,6 @@
-# PHP Object Oriented Programming Learning Repository
+# PHP Object Oriented Programming Learning Branch
 
-This repository was created to document everything I learn about OOP PHP.
+This branch was created to document everything I learn about OOP PHP.
 
 ---
 
