@@ -59,21 +59,63 @@ services:
             - '80:80'
 ```
 
-```bash
+```docker
 docker compose up
 ```
 
 The `docker compose up` command is used to build, create, and start the services defined in a docker-compose.yml file. This command orchestrates a multi-container Docker application, managing the lifecycle of all declared services, networks, and volumes.
 
-```bash
+```docker
 docker ps
 ```
 
 O comando acima é para ver quais containers estão em execução
 
-```bash
+```docker
 docker compose ps
 ```
 
 Para ver quais serviços estão em execução
 
+## PHP Dockerfile
+
+Há dois arquivos principais no Docker, já vimos o docker-compose.yaml file e agora vamos ver sobre o dockerfile, que é para a criação das imagens que é usado para a construção dos containers
+
+Vamos pegar uma imagem base do php e vamos customizar, criar a minha própria imagem baseado na imagem do PHP
+
+no Dockerfile é onde basicamente instala os componentes
+
+```docker
+docker build -t danielarrudas:php84 -f php/Dockerfile .
+```
+
+O comando acima fala para o docker qual a pasta que ele vai se basear para construir o docker, nesse caso, -t seria um apelido e -f o caminho para a pasta `/php/Dockerfile` e o . cita que seria todos os arquivos.
+
+Dockerfile:
+```docker
+FROM php:8.4.8-fpm-alpine
+
+RUN docker-php-ext-install pdo pdo_mysql
+```
+O comando `docker images` mostra quais imagens temos:
+
+
+| Repository | TAG | IMAGE ID | CREATED | SIZE |
+| ---------- | --- | -------- | ------- | ---- |
+| danielarrudas | php84 | ce368240e4f7 | 14 seconds ago | 133MB |
+| nginx | latest | 8e368240e4f7 | 8 days ago | 133MB |
+
+---
+
+## Nginx Configuration
+
+`docker exec -it php-studies-web-1 sh`
+
+Docker executa um comando no meu container
+-it significa "interactive", o que significa que posso interagir com meu container
+
+sh to shell my container
+
+`cat /etc/nginx/conf.d/default.conf `
+
+`fastcgi_param`
