@@ -30,6 +30,50 @@ In the Dockerfile, you write instructions on how to build a Docker image. A Dock
 
 Images are considered templates — you can't run an image directly, but you can use it as a base to create containers.
 
+An image is a blueprint for a container.
+
+An image must exist in order for docker to know what to build and how to build it.
+
 ### Running Multiple Containers Simultaneously
 
 A `docker-compose.yml` file manages multiple containers in a simple and unified way.
+
+## Docker Compose File
+
+no `docker-compose.yml` é onde coloca todos os componentes que serão usados, `services:` e cite os serviços
+
+Não é bom colocar o nome padrão para os serviços, como "nginx", pois, se eventualmente estiver com otur nginx server rodando para outra aplicação se tornará ambíguo e não poderia colocar o mesmo nome.
+
+A melhor coisa é nomear com algo que faça sentido, como o serviço que ele está perfomando 
+
+Imagens estão localizados no registry, você pode ter o seu registry privado ou um registry centralizado
+
+Se não especificar qual é o registry, o docker vai olhar no docker hub registry
+
+```docker
+services:
+    # nginx
+    web:
+        image: nginx:latest
+        ports:
+            - '80:80'
+```
+
+```bash
+docker compose up
+```
+
+The `docker compose up` command is used to build, create, and start the services defined in a docker-compose.yml file. This command orchestrates a multi-container Docker application, managing the lifecycle of all declared services, networks, and volumes.
+
+```bash
+docker ps
+```
+
+O comando acima é para ver quais containers estão em execução
+
+```bash
+docker compose ps
+```
+
+Para ver quais serviços estão em execução
+
