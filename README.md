@@ -1,4 +1,4 @@
-# PHP Procedural Learning Repository
+# PHP Procedural Learning
 
 This branch was created to document everything I learn about procedural PHP.
 
