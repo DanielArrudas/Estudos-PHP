@@ -124,3 +124,113 @@ With the nullsafe operator ?-> this code could instead be written as:
 ```php
 $country = $session?->user?->getAddress()?->country;
 ```
+
+## Namespace
+
+Se dar um require em duas classes que tem o mesmo nome e não ser um namespace, significado que elas estão no global space, vai causar um erro:
+
+```php
+require_once '../PaymentGateway/Stripe/Transaction.php';
+require_once '../PaymentGateway/Paddle/Transaction.php';
+//output: Fatal error: Cannot declare class Transaction, because the name is already in use in...
+```
+
+Namespace servem para corrigir isso, namespace são como se fossem estrutura de diretórios virtuais para as suas classes
+
+Podemos declarar um namespace escrevendo `namespace` no topo do arquivo, antes de qualquer código e depois de um declare statement
+
+É recomendado combinar o nome do namespace com a estrutura do arquivo:
+
+```php
+namespace PaymentGateway\Paddle;
+namespace PaymentGateway\Stripe;
+```
+```php
+require_once '../PaymentGateway/Paddle/Transaction.php';
+require_once '../PaymentGateway/Stripe/Transaction.php';
+
+$paddleTransaction = new PaymentGateway\Paddle\Transaction();
+$stripeTransaction = new PaymentGateway\Stripe\Transaction();
+var_dump($paddleTransaction);
+echo '<br>';
+var_dump($stripeTransaction);
+```
+
+É possível também usar o `use`:
+```php
+require_once '../PaymentGateway/Paddle/Transaction.php';
+require_once '../PaymentGateway/Stripe/Transaction.php';
+
+use PaymentGateway\Paddle\Transaction;
+
+$paddleTransaction = new Transaction();
+var_dump($paddleTransaction);
+```
+
+Se tentar chamar uma built-in class dentro do namespace o php vai procurar pela classe no namespace e não fora, com isso, há duas formas de contornar isso:
+```php
+
+namespace PaymentGateway\Paddle;
+
+class Transaction
+{
+    public function __construct()
+    {
+        var_dump(new \DateTime());
+    }
+}
+//Usando o backslash avisa que não é uma classe no namespace
+```
+```php
+
+namespace PaymentGateway\Paddle;
+
+use DateTime;
+
+class Transaction
+{
+    public function __construct()
+    {
+        var_dump(new DateTime());
+    }
+}
+//Usando o "use" avisa que não é uma classe no namespace
+```
+
+### Fully qualified name
+
+Se chamar uma classe de outro namespace, deve-se usar o fully qualified name, que nada mais é do que colocar o backslash antes do nome do outro namespace:
+
+Isso: 
+`new \Notification\Email();`
+
+Ao invés disso:
+`new Notification\Email();`
+
+É possível também importar o namespace `Notification\Email`, também vai funcionar:
+
+```php
+use Notification\Email;
+```
+
+### PHP built in functions in namespaces
+
+É conveniente sempre utilizar o backslash quando chamar uma função do php, uma vez que é possível que cause bugs quando ele tentar procurar a função no namespace e no globalspace. ex:
+
+```php
+var_dump(\explode(',', 'hello,world'));
+```
+
+### Change namespace class name
+
+É possível trocar o nome da classe usando "aliasing":
+```php
+
+use PaymentGateway\Paddle\Transaction;
+use PaymentGateway\Stripe\Transaction as StripeTransaction;
+
+$paddleTransaction = new Transaction();
+$stripeTransaction = new StripeTransaction();
+var_dump($paddleTransaction, $stripeTransaction);
+
+```
