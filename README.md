@@ -63,6 +63,7 @@ public function __destruct()
     echo '<br> Destruct ' . $this->description . '<br>';
 }
 ```
+
 ```php
 $class = 'Transaction';
 $transaction = (new $class(15, 'Transaction 1'))
@@ -73,10 +74,53 @@ $amount = $transaction->getAmount();
 
 var_dump($amount);
 
-//Output: 
+//Output:
 // float(15.3)
 // Destruct Transaction 1
 
 ```
 
 Se usar a função `unset($transaction)`, o destrutor também será chamado e o objeto destruído.
+
+## Constructor Property Promotion
+
+Ao colocar o especificador de acesso na chamada do construtor, não é necessário criar a propriedade na criação da classe e nem atribuir valor a propriedade com o `$this`, o construtor já cria a propriedade e ela já é atribuída o valor que foi recebido
+
+isso é chamado de "property promotion"
+
+```php
+public function __construct(
+    private float $amount,
+    private string $description
+) {
+
+}
+```
+ 
+ ## Null-safe operator
+
+ The null-safe operator allows reading the value of property and method return value chaining, where the null-safe operator short-circuits the retrieval if the value is null, without causing any errors.
+
+The syntax is similar to the property/method access operator (->), and following the nullable type pattern, the null-safe operator is ?->.
+
+```php
+$country =  null;
+ 
+if ($session !== null) {
+    $user = $session->user;
+ 
+    if ($user !== null) {
+        $address = $user->getAddress();
+ 
+        if ($address !== null) {
+            $country = $address->country;
+        }
+    }
+}
+```
+
+With the nullsafe operator ?-> this code could instead be written as:
+
+```php
+$country = $session?->user?->getAddress()?->country;
+```
