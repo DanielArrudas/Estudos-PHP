@@ -33,3 +33,16 @@ object(Transaction)#1 (0) {
   uninitialized(string)
 }
 ```
+
+
+## Constructor method
+
+O método construtor é um método que é chamado sempre que é criada uma instância do objeto, é recomendado sempre colocar qual o modificador de acesso daquele método ou propriedade, por padrão, caso não escreva o modificador de acesso o php assume que seja public, mas não é bom deixar sem:
+```php
+public function __construct(float $amount, string $description)
+{
+    $this->amount = $amount;
+    $this->description = $description;
+}
+```
+
