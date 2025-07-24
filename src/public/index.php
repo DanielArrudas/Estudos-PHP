@@ -1,13 +1,16 @@
 <?php
 declare(strict_types=1);
 
-require_once '../PaymentGateway/Stripe/Transaction.php';
-require_once '../PaymentGateway/Paddle/Transaction.php';
-require_once '../PaymentGateway/Paddle/CustomerProfile.php';
+spl_autoload_register(function($class){
+    $path = __DIR__ . '/../' . lcfirst(str_replace('\\', '/', $class)) . '.php';
+    require $path;
+});
 
-use PaymentGateway\Paddle\Transaction;
-use PaymentGateway\Stripe\Transaction as StripeTransaction;
+use App\PaymentGateway\Paddle\Transaction;
+use App\PaymentGateway\Stripe\Transaction as StripeTransaction;
+use App\Notification\Email;
 
 $paddleTransaction = new Transaction();
 $stripeTransaction = new StripeTransaction();
-var_dump($paddleTransaction, $stripeTransaction);
+$email = new Email();
+var_dump($paddleTransaction, $stripeTransaction, $email);

@@ -234,3 +234,42 @@ $stripeTransaction = new StripeTransaction();
 var_dump($paddleTransaction, $stripeTransaction);
 
 ```
+
+## Auto load
+
+spl_autoload_register — Register given function as __autoload() implementation
+
+### Callback
+
+Ele pede um callback como parâmetro:
+
+The autoload function being registered. If null, then the default implementation of spl_autoload() will be registered.
+
+callback(string $class): void
+
+The class will not contain the leading backslash of a fully-qualified identifier.
+
+### Prepend
+
+If true, spl_autoload_register() will prepend the autoloader on the autoload queue instead of appending it.
+
+### Autoload all the namespaces
+
+```php
+<?php
+declare(strict_types=1);
+
+spl_autoload_register(function($class){
+    $path = __DIR__ . '/../' . lcfirst(str_replace('\\', '/', $class)) . '.php';
+    require $path;
+});
+
+use App\PaymentGateway\Paddle\Transaction;
+use App\PaymentGateway\Stripe\Transaction as StripeTransaction;
+use App\Notification\Email;
+
+$paddleTransaction = new Transaction();
+$stripeTransaction = new StripeTransaction();
+$email = new Email();
+var_dump($paddleTransaction, $stripeTransaction, $email);
+```
