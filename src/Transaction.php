@@ -2,21 +2,33 @@
 declare(strict_types=1);
 class Transaction
 {
-    public int $amount;
+    public float $amount;
     public string $description;
 
-    public function __construct(int $amount, string $description)
+    public function __construct(float $amount, string $description)
     {
-        $this->amount = $amount *100;
+        $this->amount = $amount;
         $this->description = $description;
     }
 
-    public function addTax(int $rate): int
+    public function addTax(float $rate): Transaction
     {
-        return $this->amount += $this->amount * $rate / 100;
+        $this->amount += $this->amount * $rate / 100;
+        return $this;
     }
-    public function applyDiscount(int $rate): int
+    public function applyDiscount(float $rate): Transaction
     {
-        return $this->amount -= $this->amount * $rate / 100;
+        $this->amount -= $this->amount * $rate / 100;
+        return $this;
+    }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function __destruct()
+    {
+        echo '<br> Destruct ' . $this->description . '<br>';
     }
 }
