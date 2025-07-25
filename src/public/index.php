@@ -1,10 +1,16 @@
 <?php
+declare(strict_types=1);
 
-require_once '../Transaction.php';
+spl_autoload_register(function($class){
+    $path = __DIR__ . '/../' . lcfirst(str_replace('\\', '/', $class)) . '.php';
+    require $path;
+});
 
-$transaction = new Transaction(100, "descrição")
-->addTax(5)
-->applyDiscount(10);
+use App\PaymentGateway\Paddle\Transaction;
+use App\PaymentGateway\Stripe\Transaction as StripeTransaction;
+use App\Notification\Email;
 
-echo '<pre>';
-var_dump($transaction);
+$paddleTransaction = new Transaction();
+$stripeTransaction = new StripeTransaction();
+$email = new Email();
+var_dump($paddleTransaction, $stripeTransaction, $email);
