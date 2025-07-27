@@ -334,3 +334,29 @@ The header of a PHP file may consist of a number of different blocks. If present
 - One or more function-based `use` import statements.
 - One or more constant-based `use` import statements.
 - The remainder of the code in the file.
+
+## Using composer for autoload
+
+É possível usar o composer como autoloader, dentro da pasta vendor tem o arquivo autoload.php, é ele que vamos chamar no nosso index dentro da public:
+
+```php
+require __DIR__ . '/../vendor/autoload.php';
+```
+
+E no composer.json devemos adicionar o autoload através da psr-4:
+
+```json
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
+```
+
+E usar o comando `composer dump-autoload` para ele gerar a "rota" do app informado no json. (É tranquilo usar para desenvolvimento, mas não produção)
+
+Tem também o comando `composer dump-autoload -o` que gera todos namespaces que vamos precisar no projeto. (Utilizado para produção, por ser mais rápido e otimizado)
+
+É bom adicionar a pasta vendor no git ignore.
