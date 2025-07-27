@@ -303,3 +303,34 @@ $stripeTransaction = new StripeTransaction();
 $email = new Email();
 var_dump($paddleTransaction, $stripeTransaction, $email);
 ```
+
+## PHP-FIG
+
+PHP-FIG é um grupo que tem o objetivo principal de criar padrões PHP para promover a interoperabilidade no meio dos frameworks PHP, bibliotecas e outros pedaços de software baseado em PHP.
+
+[PHP-FIG](https://www.php-fig.org/)
+
+Esse grupo é responsável pelos padrões PSR, eles fornecem guidelines no coding style, logger interface, http cache e mais.
+
+Cada PSR é projetada para trazer os códigos mais consistentes e manuteníveis.
+
+[PSR](https://www.php-fig.org/psr/)
+
+---
+
+### Some important things about PSR
+
+Na PSR-12 fala um pouco de como os blocos de códigos devem ser distribuídos:
+
+#### 3. Declare Statements, Namespace, and Import Statements
+
+The header of a PHP file may consist of a number of different blocks. If present, each of the blocks below MUST be separated by a single blank line, and MUST NOT contain a blank line. Each block MUST be in the order listed below, although blocks that are not relevant may be omitted.
+
+- Opening `<?php` tag.
+- File-level docblock.
+- One or more declare statements.
+- The namespace declaration of the file.
+- One or more class-based `use` import statements.
+- One or more function-based `use` import statements.
+- One or more constant-based `use` import statements.
+- The remainder of the code in the file.
