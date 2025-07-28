@@ -5,8 +5,7 @@ namespace App\PaymentGateway\Paddle;
 
 class Transaction
 {
-    public function __construct()
-    {
-        var_dump(new \DateTime());
-    }
+    public const STATUS_PAID = 'paid';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_DECLINED = 'declined';
 }

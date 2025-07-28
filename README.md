@@ -360,3 +360,7 @@ E usar o comando `composer dump-autoload` para ele gerar a "rota" do app informa
 Tem também o comando `composer dump-autoload -o` que gera todos namespaces que vamos precisar no projeto. (Utilizado para produção, por ser mais rápido e otimizado)
 
 É bom adicionar a pasta vendor no git ignore.
+
+## Class Constants
+
+Constantes dentro de clases são alocadas uma por classe e não uma por instância, ou seja, não é necessário instanciar um objeto da classe para acessar a constante da classe.
