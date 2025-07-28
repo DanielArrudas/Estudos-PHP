@@ -361,6 +361,45 @@ Tem também o comando `composer dump-autoload -o` que gera todos namespaces que 
 
 É bom adicionar a pasta vendor no git ignore.
 
+## Scope Resolution Operator (::)
+
+The Scope Resolution Operator, the double colon, is a token that allows access to a constant, static property, or static method of a class or one of its parents. Moreover, static properties or methods can be overriden via late static binding. 
+
 ## Class Constants
 
 Constantes dentro de clases são alocadas uma por classe e não uma por instância, ou seja, não é necessário instanciar um objeto da classe para acessar a constante da classe.
+
+Para acessar uma constante públic:
+
+```php
+echo Transaction::STATUS_PAID;
+```
+É possível acessar por um objeto também:
+
+```php
+$transaction = new Transaction();
+
+echo $transaction::STATUS_PAID;
+```
+
+Se a constante for privada:
+
+```php
+public function __construct()
+{
+    var_dump(self::STATUS_PAID);
+}
+```
+Usamos o self  para referenciar a própria classe ou podemos usar o nome da classe também.
+
+Podemos printar o fully qualified class name pelo objeto ou dentro da classe:
+
+```php
+//instanciando
+$transaction = new Transaction();
+echo $transaction::class;
+//na classe
+
+echo $self::class;
+```
+
