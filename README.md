@@ -40,7 +40,7 @@ object(Transaction)#1 (0) {
 public function applyDiscount(float $rate): Transaction
 {
     $this->amount -= $this->amount * $rate / 100;
-    
+
     return $this;
 }
 ```
@@ -126,22 +126,22 @@ public function __construct(
 
 }
 ```
- 
- ## Null-safe operator
 
- The null-safe operator allows reading the value of property and method return value chaining, where the null-safe operator short-circuits the retrieval if the value is null, without causing any errors.
+## Null-safe operator
+
+The null-safe operator allows reading the value of property and method return value chaining, where the null-safe operator short-circuits the retrieval if the value is null, without causing any errors.
 
 The syntax is similar to the property/method access operator (->), and following the nullable type pattern, the null-safe operator is ?->.
 
 ```php
 $country =  null;
- 
+
 if ($session !== null) {
     $user = $session->user;
- 
+
     if ($user !== null) {
         $address = $user->getAddress();
- 
+
         if ($address !== null) {
             $country = $address->country;
         }
@@ -175,6 +175,7 @@ Podemos declarar um namespace escrevendo `namespace` no topo do arquivo, antes d
 namespace PaymentGateway\Paddle;
 namespace PaymentGateway\Stripe;
 ```
+
 ```php
 require_once '../PaymentGateway/Paddle/Transaction.php';
 require_once '../PaymentGateway/Stripe/Transaction.php';
@@ -187,6 +188,7 @@ var_dump($stripeTransaction);
 ```
 
 É possível também usar o `use`:
+
 ```php
 require_once '../PaymentGateway/Paddle/Transaction.php';
 require_once '../PaymentGateway/Stripe/Transaction.php';
@@ -198,6 +200,7 @@ var_dump($paddleTransaction);
 ```
 
 Se tentar chamar uma built-in class dentro do namespace o php vai procurar pela classe no namespace e não fora, com isso, há duas formas de contornar isso:
+
 ```php
 
 namespace PaymentGateway\Paddle;
@@ -211,6 +214,7 @@ class Transaction
 }
 //Usando o backslash avisa que não é uma classe no namespace
 ```
+
 ```php
 
 namespace PaymentGateway\Paddle;
@@ -231,7 +235,7 @@ class Transaction
 
 Se chamar uma classe de outro namespace, deve-se usar o fully qualified name, que nada mais é do que colocar o backslash antes do nome do outro namespace:
 
-Isso: 
+Isso:
 `new \Notification\Email();`
 
 Ao invés disso:
@@ -254,6 +258,7 @@ var_dump(\explode(',', 'hello,world'));
 ### Change namespace class name
 
 É possível trocar o nome da classe usando "aliasing":
+
 ```php
 
 use PaymentGateway\Paddle\Transaction;
@@ -267,7 +272,7 @@ var_dump($paddleTransaction, $stripeTransaction);
 
 ## Auto load
 
-spl_autoload_register — Register given function as __autoload() implementation
+spl_autoload_register — Register given function as \_\_autoload() implementation
 
 ### Callback
 
@@ -326,14 +331,14 @@ Na PSR-12 fala um pouco de como os blocos de códigos devem ser distribuídos:
 
 The header of a PHP file may consist of a number of different blocks. If present, each of the blocks below MUST be separated by a single blank line, and MUST NOT contain a blank line. Each block MUST be in the order listed below, although blocks that are not relevant may be omitted.
 
-- Opening `<?php` tag.
-- File-level docblock.
-- One or more declare statements.
-- The namespace declaration of the file.
-- One or more class-based `use` import statements.
-- One or more function-based `use` import statements.
-- One or more constant-based `use` import statements.
-- The remainder of the code in the file.
+-   Opening `<?php` tag.
+-   File-level docblock.
+-   One or more declare statements.
+-   The namespace declaration of the file.
+-   One or more class-based `use` import statements.
+-   One or more function-based `use` import statements.
+-   One or more constant-based `use` import statements.
+-   The remainder of the code in the file.
 
 ## Using composer for autoload
 
@@ -363,7 +368,7 @@ Tem também o comando `composer dump-autoload -o` que gera todos namespaces que 
 
 ## Scope Resolution Operator (::)
 
-The Scope Resolution Operator, the double colon, is a token that allows access to a constant, static property, or static method of a class or one of its parents. Moreover, static properties or methods can be overriden via late static binding. 
+The Scope Resolution Operator, the double colon, is a token that allows access to a constant, static property, or static method of a class or one of its parents. Moreover, static properties or methods can be overriden via late static binding.
 
 ## Class Constants
 
@@ -374,6 +379,7 @@ Para acessar uma constante públic:
 ```php
 echo Transaction::STATUS_PAID;
 ```
+
 É possível acessar por um objeto também:
 
 ```php
@@ -390,7 +396,8 @@ public function __construct()
     var_dump(self::STATUS_PAID);
 }
 ```
-Usamos o self  para referenciar a própria classe ou podemos usar o nome da classe também.
+
+Usamos o self para referenciar a própria classe ou podemos usar o nome da classe também.
 
 Podemos printar o fully qualified class name pelo objeto ou dentro da classe:
 
@@ -403,3 +410,55 @@ echo $transaction::class;
 echo $self::class;
 ```
 
+## Static
+
+Não é possível pegar um valor de uma propriedade não estática usando o scope resolution operator
+
+Um exemplo de uso:
+
+```php
+class Transaction
+{
+    private static int $count = 0;
+
+    public function __construct(
+        public float $amount,
+        public string $description
+    ) {
+        self::$count++;
+    }
+    public static function getCount(): int
+    {
+        return self::$count;
+    }
+
+    public function process(): void
+    {
+        echo 'Processing paddle transaction...';
+    }
+}
+```
+
+## Inheritance
+
+A palavra `extends` é utilizada para herdar uma classe da outra:
+
+```php
+class A
+{
+    
+}
+
+class B extends A
+{
+   
+}
+```
+
+Usar protected nas propriedades torna possível mudar uma propriedade no child, onde no private não seria possível.
+
+`parent::__construct();` chama o construtor do pai
+
+Se declarar uma classe com `final`, uma outra classe não pode herdà-la, é possível utilizar final e métodos também, onde o método não pode ser substituído
+
+Use inheritance when you have the proper 'is a' relationship between the child and the parent
