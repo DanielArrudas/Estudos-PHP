@@ -462,3 +462,28 @@ Usar protected nas propriedades torna possível mudar uma propriedade no child, 
 Se declarar uma classe com `final`, uma outra classe não pode herdà-la, é possível utilizar final e métodos também, onde o método não pode ser substituído
 
 Use inheritance when you have the proper 'is a' relationship between the child and the parent
+
+## Class Abstraction
+
+PHP has abstract classes, methods, and properties. Classes defined as abstract cannot be instantiated, and any class that contains at least one abstract method or property must also be abstract. Methods defined as abstract simply declare the method's signature and whether it is public or protected; they cannot define the implementation. Properties defined as abstract may declare a requirement for get or set behavior, and may provide an implementation for one, but not both, operations.
+
+![alt text](img/abstract.png)
+
+Nas classes abstratas você conhece o "what", mas não o "how", as classes filhas que extenderem ela que devem implementar o "how".
+
+## Object Interfaces
+
+
+Object interfaces allow you to create code which specifies which methods and properties a class must implement, without having to define how these methods or properties are implemented.
+
+Interfaces are defined in the same way as a class, but with the interface keyword replacing the class keyword and without any of the methods having their contents defined. 
+
+Constantes definidas dentro de uma interface não pode ser reescrita
+
+Diferença entre abstract classes para interfaces
+
+![alt text](img/AbstractVsInterface.png)
+
+Pense o seguinte quando for usar inteface:
+
+A sua classe pode ter múltiplas implementações diferentes? se a resposta for sim, interface é o caminho a se usar.
