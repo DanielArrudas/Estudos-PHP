@@ -531,3 +531,12 @@ class C {
 
 var_dump(new C(42));
 ```
+
+## Late static Binding
+
+Existe dois tipos de "Binding":
+
+- Early Binding (happens at compile time)
+- Late Binding (happens at runtime)
+
+[Late Static Bindings](https://www.php.net/manual/en/language.oop5.late-static-bindings.php)
