@@ -463,6 +463,16 @@ Se declarar uma classe com `final`, uma outra classe não pode herdà-la, é pos
 
 Use inheritance when you have the proper 'is a' relationship between the child and the parent
 
+## Polymorphism
+
+Polymorphism allows objects of different classes to respond differently based on the same message.
+
+Polymorphism helps you create a generic framework that takes the different object types that share the same interface.
+
+Later, when you add a new object type to the system, you don’t need to change the framework to accommodate the new object type as long as it implements the same interface.
+
+By using polymorphism, you can reduce coupling and increase code reusability.
+
 ## Class Abstraction
 
 PHP has abstract classes, methods, and properties. Classes defined as abstract cannot be instantiated, and any class that contains at least one abstract method or property must also be abstract. Methods defined as abstract simply declare the method's signature and whether it is public or protected; they cannot define the implementation. Properties defined as abstract may declare a requirement for get or set behavior, and may provide an implementation for one, but not both, operations.
@@ -473,6 +483,7 @@ Nas classes abstratas você conhece o "what", mas não o "how", as classes filha
 
 ## Object Interfaces
 
+Interfaces in PHP serve as a blueprint for designing classes. They ensure that a class adheres to a certain contract, all without defining how those methods should function.
 
 Object interfaces allow you to create code which specifies which methods and properties a class must implement, without having to define how these methods or properties are implemented.
 
@@ -487,3 +498,36 @@ Diferença entre abstract classes para interfaces
 Pense o seguinte quando for usar inteface:
 
 A sua classe pode ter múltiplas implementações diferentes? se a resposta for sim, interface é o caminho a se usar.
+
+## Magic Methods
+
+### __toString()
+
+ The __toString() method allows a class to decide how it will react when it is treated like a string. For example, what echo $obj; will print. 
+
+### __invoke()
+
+The __invoke() method is called when a script tries to call an object as a function. 
+
+### __debuginfo()
+
+This method is called by var_dump() when dumping an object to get the properties that should be shown. If the method isn't defined on an object, then all public, protected and private properties will be shown.
+
+```php
+<?php
+class C {
+    private $prop;
+
+    public function __construct($val) {
+        $this->prop = $val;
+    }
+
+    public function __debugInfo() {
+        return [
+            'propSquared' => $this->prop ** 2,
+        ];
+    }
+}
+
+var_dump(new C(42));
+```
