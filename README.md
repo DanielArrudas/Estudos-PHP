@@ -540,3 +540,50 @@ Existe dois tipos de "Binding":
 - Late Binding (happens at runtime)
 
 [Late Static Bindings](https://www.php.net/manual/en/language.oop5.late-static-bindings.php)
+
+## Traits
+
+É uma maneira que o PHP implementa para reúso de código.
+
+Um grupo de métodos que podem ser inseridos dentro de classes.
+
+São definidas com a expressão `trait` seguido pelo nome e por um bloco de código, para utilizar uma trait dentro de uma classe utilize `use` seguido pelo nome da trait.
+
+Ex:
+
+```php
+<?php
+
+trait TraitA {
+    public function sayHello() {
+        echo 'Hello';
+    }
+}
+
+trait TraitB {
+    public function sayWorld() {
+        echo 'World';
+    }
+}
+
+class MyHelloWorld
+{
+    use TraitA, TraitB; // A class can use multiple traits
+
+    public function sayHelloWorld() {
+        $this->sayHello();
+        echo ' ';
+        $this->sayWorld();
+        echo "!\n";
+    }
+}
+
+$myHelloWorld = new MyHelloWorld();
+$myHelloWorld->sayHelloWorld();
+```
+
+## Anonymous classes
+
+Usos das classes anônimas:
+
+![Anonymous classes](img/anonymous.png)
