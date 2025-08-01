@@ -1,4 +1,4 @@
-# Estudos-PHP
+# PHP-Studies
 
 This repository is dedicated to documenting everything I’m learning about **PHP**.  
 Each topic is organized into its own branch, allowing me to separate concepts and approaches clearly.
