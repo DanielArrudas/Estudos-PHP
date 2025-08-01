@@ -1,22 +1,44 @@
-# PHP Object Oriented Programming Learning
+# PHP Object-Oriented Programming (OOP) Learning
 
-This branch was created to document everything I learn about OOP PHP.
+This branch was created to document everything I learn about OOP in PHP.
 
 ---
 
 ## 📚 Table of Contents
 
+- [Classes & Objects](#classes--objects)
+- [Constructor Method](#constructor-method)
+- [Creating Objects Using Variables](#creating-objects-using-variables)
+- [Destructor](#destructor)
+- [Constructor Property Promotion](#constructor-property-promotion)
+- [Null-safe Operator](#null-safe-operator)
+- [Namespaces](#namespace)
+- [Autoload](#auto-load)
+- [PHP-FIG & PSR](#php-fig)
+- [Composer Autoloading](#using-composer-for-autoload)
+- [Scope Resolution Operator (::)](#scope-resolution-operator-)
+- [Class Constants](#class-constants)
+- [Static Members](#static)
+- [Inheritance](#inheritance)
+- [Polymorphism](#polymorphism)
+- [Abstraction](#class-abstraction)
+- [Interfaces](#object-interfaces)
+- [Magic Methods](#magic-methods)
+- [Late Static Binding](#late-static-binding)
+- [Traits](#traits)
+- [Anonymous Classes](#anonymous-classes)
+
 ---
 
 ## Classes & Objects
 
-É recomendado criar um arquivo para cada classe e nomeá-las sempre com o nome do arquivo
+It is recommended to create one file per class and name each file after its class.
 
-Variáveis das classes são chamadas de propriedades e funções são chamadas de métodos
+Class variables are called **properties**, and functions inside a class are called **methods**.
 
-O object operator é o seguinte: `->`, é com ele que é possível acessar as propriedades e métodos de um objeto.
+Use the object operator `->` to access an object’s properties and methods.
 
-A propriedade cujo nenhum valor foi setado e foi definida com algum tipo terá o tipo "uninitialized(typename)", ex:
+If a property is declared with a type but not initialized, it shows up as `uninitialized(type)`:
 
 ```php
 public float $amount;
@@ -25,7 +47,7 @@ public string $description;
 
 Output:
 
-```javascript
+```php
 object(Transaction)#1 (0) {
   ["amount"]=>
   uninitialized(float)
@@ -34,122 +56,74 @@ object(Transaction)#1 (0) {
 }
 ```
 
-É possível colocar como retorno de um método o nome da classe, assim o método vai retornar o próprio objeto que o chamou.
+You can return the current object from a method by typing the class name as the return type:
 
 ```php
-public function applyDiscount(float $rate): Transaction
-{
+public function applyDiscount(float $rate): Transaction {
     $this->amount -= $this->amount * $rate / 100;
-
     return $this;
 }
 ```
 
-Com isso pode-se aplicar o "method chaining":
+This allows **method chaining**:
 
 ```php
-$transaction = new Transaction(100, "descrição")
-->addTax(5)
-->applyDiscount(10);
-
-//O objeto é instanciado e já chama o método addTax e o applyDiscount é chamado para o objeto retornado desse método
+$transaction = new Transaction(100, "Description")
+    ->addTax(5)
+    ->applyDiscount(10);
 ```
 
-É possível também instanciar um objeto, chamar os métodos necessários e logo depois pegar o valor, "descartando" o objeto:
+You can also discard the object after calling methods:
 
 ```php
-$transaction = new Transaction(100, "descrição")
-->addTax(5)
-->applyDiscount(10);
-->getAmount();
+$amount = (new Transaction(100, "Description"))
+    ->addTax(5)
+    ->applyDiscount(10)
+    ->getAmount();
 ```
 
-## Constructor method
+## Constructor Method
 
-O método construtor é um método que é chamado sempre que é criada uma instância do objeto, é recomendado sempre colocar qual o modificador de acesso daquele método ou propriedade, por padrão, caso não escreva o modificador de acesso o php assume que seja public, mas não é bom deixar sem:
+The constructor is a method automatically called when a new instance is created. Always declare visibility (public/private/protected) explicitly.
 
 ```php
-public function __construct(float $amount, string $description)
-{
+public function __construct(float $amount, string $description) {
     $this->amount = $amount;
     $this->description = $description;
 }
 ```
 
-## Criando objetos usando variáveis
+## Creating Objects Using Variables
 
 ```php
 $class = 'Transaction';
-$amount = new $class(15, 'descrição');
+$transaction = new $class(15, 'Description');
 ```
 
 ## Destructor
 
-O método destrutor é chamado quando não há mais referência para o objeto ou quando o objeto é destruído.
+The destructor method is called when there are no more references to the object, or explicitly with `unset()`.
 
 ```php
-public function __destruct()
-{
+public function __destruct() {
     echo '<br> Destruct ' . $this->description . '<br>';
 }
 ```
 
-```php
-$class = 'Transaction';
-$transaction = (new $class(15, 'Transaction 1'))
-    ->addTax(20)
-    ->applyDiscount(15);
-
-$amount = $transaction->getAmount();
-
-var_dump($amount);
-
-//Output:
-// float(15.3)
-// Destruct Transaction 1
-
-```
-
-Se usar a função `unset($transaction)`, o destrutor também será chamado e o objeto destruído.
-
 ## Constructor Property Promotion
 
-Ao colocar o especificador de acesso na chamada do construtor, não é necessário criar a propriedade na criação da classe e nem atribuir valor a propriedade com o `$this`, o construtor já cria a propriedade e ela já é atribuída o valor que foi recebido
-
-isso é chamado de "property promotion"
+Using property promotion simplifies your constructor by defining and initializing properties in one line:
 
 ```php
 public function __construct(
     private float $amount,
     private string $description
-) {
-
-}
+) {}
 ```
 
-## Null-safe operator
+## Null-safe Operator
 
-The null-safe operator allows reading the value of property and method return value chaining, where the null-safe operator short-circuits the retrieval if the value is null, without causing any errors.
-
-The syntax is similar to the property/method access operator (->), and following the nullable type pattern, the null-safe operator is ?->.
-
-```php
-$country =  null;
-
-if ($session !== null) {
-    $user = $session->user;
-
-    if ($user !== null) {
-        $address = $user->getAddress();
-
-        if ($address !== null) {
-            $country = $address->country;
-        }
-    }
-}
-```
-
-With the nullsafe operator ?-> this code could instead be written as:
+The null-safe operator `?->` avoids errors when accessing properties/methods on potentially null objects.
 
 ```php
 $country = $session?->user?->getAddress()?->country;
@@ -157,198 +131,52 @@ $country = $session?->user?->getAddress()?->country;
 
 ## Namespace
 
-Se dar um require em duas classes que tem o mesmo nome e não ser um namespace, significado que elas estão no global space, vai causar um erro:
+Namespaces avoid name collisions between classes with the same name.
 
 ```php
-require_once '../PaymentGateway/Stripe/Transaction.php';
-require_once '../PaymentGateway/Paddle/Transaction.php';
-//output: Fatal error: Cannot declare class Transaction, because the name is already in use in...
-```
-
-Namespace servem para corrigir isso, namespace são como se fossem estrutura de diretórios virtuais para as suas classes
-
-Podemos declarar um namespace escrevendo `namespace` no topo do arquivo, antes de qualquer código e depois de um declare statement
-
-É recomendado combinar o nome do namespace com a estrutura do arquivo:
-
-```php
-namespace PaymentGateway\Paddle;
 namespace PaymentGateway\Stripe;
 ```
 
-```php
-require_once '../PaymentGateway/Paddle/Transaction.php';
-require_once '../PaymentGateway/Stripe/Transaction.php';
+Access classes using their fully qualified name or with `use` statements:
 
-$paddleTransaction = new PaymentGateway\Paddle\Transaction();
-$stripeTransaction = new PaymentGateway\Stripe\Transaction();
-var_dump($paddleTransaction);
-echo '<br>';
-var_dump($stripeTransaction);
+```php
+use PaymentGateway\Stripe\Transaction;
 ```
 
-É possível também usar o `use`:
+Access PHP built-in classes from within a namespace with `\`:
 
 ```php
-require_once '../PaymentGateway/Paddle/Transaction.php';
-require_once '../PaymentGateway/Stripe/Transaction.php';
-
-use PaymentGateway\Paddle\Transaction;
-
-$paddleTransaction = new Transaction();
-var_dump($paddleTransaction);
+$datetime = new \DateTime();
 ```
 
-Se tentar chamar uma built-in class dentro do namespace o php vai procurar pela classe no namespace e não fora, com isso, há duas formas de contornar isso:
+You can also alias class names:
 
 ```php
-
-namespace PaymentGateway\Paddle;
-
-class Transaction
-{
-    public function __construct()
-    {
-        var_dump(new \DateTime());
-    }
-}
-//Usando o backslash avisa que não é uma classe no namespace
-```
-
-```php
-
-namespace PaymentGateway\Paddle;
-
-use DateTime;
-
-class Transaction
-{
-    public function __construct()
-    {
-        var_dump(new DateTime());
-    }
-}
-//Usando o "use" avisa que não é uma classe no namespace
-```
-
-### Fully qualified name
-
-Se chamar uma classe de outro namespace, deve-se usar o fully qualified name, que nada mais é do que colocar o backslash antes do nome do outro namespace:
-
-Isso:
-`new \Notification\Email();`
-
-Ao invés disso:
-`new Notification\Email();`
-
-É possível também importar o namespace `Notification\Email`, também vai funcionar:
-
-```php
-use Notification\Email;
-```
-
-### PHP built in functions in namespaces
-
-É conveniente sempre utilizar o backslash quando chamar uma função do php, uma vez que é possível que cause bugs quando ele tentar procurar a função no namespace e no globalspace. ex:
-
-```php
-var_dump(\explode(',', 'hello,world'));
-```
-
-### Change namespace class name
-
-É possível trocar o nome da classe usando "aliasing":
-
-```php
-
-use PaymentGateway\Paddle\Transaction;
 use PaymentGateway\Stripe\Transaction as StripeTransaction;
-
-$paddleTransaction = new Transaction();
-$stripeTransaction = new StripeTransaction();
-var_dump($paddleTransaction, $stripeTransaction);
-
 ```
 
-## Auto load
+Use `var_dump(\explode(',', 'hello,world'))` to avoid potential bugs.
 
-spl_autoload_register — Register given function as \_\_autoload() implementation
+## Auto Load
 
-### Callback
-
-Ele pede um callback como parâmetro:
-
-The autoload function being registered. If null, then the default implementation of spl_autoload() will be registered.
-
-callback(string $class): void
-
-The class will not contain the leading backslash of a fully-qualified identifier.
-
-### Prepend
-
-If true, spl_autoload_register() will prepend the autoloader on the autoload queue instead of appending it.
-
-### Autoload all the namespaces
+Register an autoloader function using `spl_autoload_register()`:
 
 ```php
-<?php
-declare(strict_types=1);
-
-spl_autoload_register(function($class){
+spl_autoload_register(function($class) {
     $path = __DIR__ . '/../' . lcfirst(str_replace('\\', '/', $class)) . '.php';
     require $path;
 });
-
-use App\PaymentGateway\Paddle\Transaction;
-use App\PaymentGateway\Stripe\Transaction as StripeTransaction;
-use App\Notification\Email;
-
-$paddleTransaction = new Transaction();
-$stripeTransaction = new StripeTransaction();
-$email = new Email();
-var_dump($paddleTransaction, $stripeTransaction, $email);
 ```
 
 ## PHP-FIG
 
-PHP-FIG é um grupo que tem o objetivo principal de criar padrões PHP para promover a interoperabilidade no meio dos frameworks PHP, bibliotecas e outros pedaços de software baseado em PHP.
+[PHP-FIG](https://www.php-fig.org/) is responsible for defining PSR standards to ensure consistency across PHP libraries and frameworks.
 
-[PHP-FIG](https://www.php-fig.org/)
+Notable example: [PSR-12](https://www.php-fig.org/psr/psr-12/) for coding standards.
 
-Esse grupo é responsável pelos padrões PSR, eles fornecem guidelines no coding style, logger interface, http cache e mais.
+## Using Composer for Autoload
 
-Cada PSR é projetada para trazer os códigos mais consistentes e manuteníveis.
-
-[PSR](https://www.php-fig.org/psr/)
-
----
-
-### Some important things about PSR
-
-Na PSR-12 fala um pouco de como os blocos de códigos devem ser distribuídos:
-
-#### 3. Declare Statements, Namespace, and Import Statements
-
-The header of a PHP file may consist of a number of different blocks. If present, each of the blocks below MUST be separated by a single blank line, and MUST NOT contain a blank line. Each block MUST be in the order listed below, although blocks that are not relevant may be omitted.
-
--   Opening `<?php` tag.
--   File-level docblock.
--   One or more declare statements.
--   The namespace declaration of the file.
--   One or more class-based `use` import statements.
--   One or more function-based `use` import statements.
--   One or more constant-based `use` import statements.
--   The remainder of the code in the file.
-
-## Using composer for autoload
-
-É possível usar o composer como autoloader, dentro da pasta vendor tem o arquivo autoload.php, é ele que vamos chamar no nosso index dentro da public:
-
-```php
-require __DIR__ . '/../vendor/autoload.php';
-```
-
-E no composer.json devemos adicionar o autoload através da psr-4:
+Composer autoloads classes from the `vendor` directory. Add this to your `composer.json`:
 
 ```json
 {
@@ -360,230 +188,133 @@ E no composer.json devemos adicionar o autoload através da psr-4:
 }
 ```
 
-E usar o comando `composer dump-autoload` para ele gerar a "rota" do app informado no json. (É tranquilo usar para desenvolvimento, mas não produção)
+Then run:
 
-Tem também o comando `composer dump-autoload -o` que gera todos namespaces que vamos precisar no projeto. (Utilizado para produção, por ser mais rápido e otimizado)
+```bash
+composer dump-autoload -o
+```
 
-É bom adicionar a pasta vendor no git ignore.
+Include in your `index.php`:
+
+```php
+require __DIR__ . '/../vendor/autoload.php';
+```
 
 ## Scope Resolution Operator (::)
 
-The Scope Resolution Operator, the double colon, is a token that allows access to a constant, static property, or static method of a class or one of its parents. Moreover, static properties or methods can be overriden via late static binding.
-
-## Class Constants
-
-Constantes dentro de clases são alocadas uma por classe e não uma por instância, ou seja, não é necessário instanciar um objeto da classe para acessar a constante da classe.
-
-Para acessar uma constante públic:
+Used to access class constants, static properties, and static methods.
 
 ```php
 echo Transaction::STATUS_PAID;
 ```
 
-É possível acessar por um objeto também:
+## Class Constants
+
+Constants are shared across instances and accessed statically.
 
 ```php
-$transaction = new Transaction();
-
-echo $transaction::STATUS_PAID;
-```
-
-Se a constante for privada:
-
-```php
-public function __construct()
-{
-    var_dump(self::STATUS_PAID);
+class Transaction {
+    const STATUS_PAID = 'paid';
 }
-```
-
-Usamos o self para referenciar a própria classe ou podemos usar o nome da classe também.
-
-Podemos printar o fully qualified class name pelo objeto ou dentro da classe:
-
-```php
-//instanciando
-$transaction = new Transaction();
-echo $transaction::class;
-//na classe
-
-echo $self::class;
 ```
 
 ## Static
 
-Não é possível pegar um valor de uma propriedade não estática usando o scope resolution operator
-
-Um exemplo de uso:
+Static methods and properties belong to the class, not an instance.
 
 ```php
-class Transaction
-{
+class Transaction {
     private static int $count = 0;
 
-    public function __construct(
-        public float $amount,
-        public string $description
-    ) {
-        self::$count++;
-    }
-    public static function getCount(): int
-    {
+    public static function getCount(): int {
         return self::$count;
-    }
-
-    public function process(): void
-    {
-        echo 'Processing paddle transaction...';
     }
 }
 ```
 
 ## Inheritance
 
-A palavra `extends` é utilizada para herdar uma classe da outra:
+Use `extends` to inherit from a base class.
 
 ```php
-class A
-{
-    
-}
-
-class B extends A
-{
-   
-}
+class B extends A {}
 ```
 
-Usar protected nas propriedades torna possível mudar uma propriedade no child, onde no private não seria possível.
-
-`parent::__construct();` chama o construtor do pai
-
-Se declarar uma classe com `final`, uma outra classe não pode herdà-la, é possível utilizar final e métodos também, onde o método não pode ser substituído
-
-Use inheritance when you have the proper 'is a' relationship between the child and the parent
+Use `parent::__construct()` to call the parent constructor. Use `final` to prevent overriding a class or method.
 
 ## Polymorphism
 
-Polymorphism allows objects of different classes to respond differently based on the same message.
-
-Polymorphism helps you create a generic framework that takes the different object types that share the same interface.
-
-Later, when you add a new object type to the system, you don’t need to change the framework to accommodate the new object type as long as it implements the same interface.
-
-By using polymorphism, you can reduce coupling and increase code reusability.
+Polymorphism allows multiple classes to implement the same interface or extend the same base class, enabling interchangeable objects.
 
 ## Class Abstraction
 
-PHP has abstract classes, methods, and properties. Classes defined as abstract cannot be instantiated, and any class that contains at least one abstract method or property must also be abstract. Methods defined as abstract simply declare the method's signature and whether it is public or protected; they cannot define the implementation. Properties defined as abstract may declare a requirement for get or set behavior, and may provide an implementation for one, but not both, operations.
+Abstract classes define base functionality and force child classes to implement specific methods.
+
+```php
+abstract class PaymentMethod {
+    abstract public function process();
+}
+```
 
 ![alt text](img/abstract.png)
 
-Nas classes abstratas você conhece o "what", mas não o "how", as classes filhas que extenderem ela que devem implementar o "how".
-
 ## Object Interfaces
 
-Interfaces in PHP serve as a blueprint for designing classes. They ensure that a class adheres to a certain contract, all without defining how those methods should function.
+Interfaces define a contract that implementing classes must follow.
 
-Object interfaces allow you to create code which specifies which methods and properties a class must implement, without having to define how these methods or properties are implemented.
+```php
+interface LoggerInterface {
+    public function log(string $message): void;
+}
+```
 
-Interfaces are defined in the same way as a class, but with the interface keyword replacing the class keyword and without any of the methods having their contents defined. 
-
-Constantes definidas dentro de uma interface não pode ser reescrita
-
-Diferença entre abstract classes para interfaces
+Use interfaces when multiple implementations are expected.
 
 ![alt text](img/AbstractVsInterface.png)
 
-Pense o seguinte quando for usar inteface:
-
-A sua classe pode ter múltiplas implementações diferentes? se a resposta for sim, interface é o caminho a se usar.
-
 ## Magic Methods
 
-### __toString()
+- `__toString()` – Defines how the object should be converted to a string.
+- `__invoke()` – Allows calling the object as a function.
+- `__debugInfo()` – Customizes output when `var_dump()` is used.
 
- The __toString() method allows a class to decide how it will react when it is treated like a string. For example, what echo $obj; will print. 
+## Late Static Binding
 
-### __invoke()
-
-The __invoke() method is called when a script tries to call an object as a function. 
-
-### __debuginfo()
-
-This method is called by var_dump() when dumping an object to get the properties that should be shown. If the method isn't defined on an object, then all public, protected and private properties will be shown.
-
-```php
-<?php
-class C {
-    private $prop;
-
-    public function __construct($val) {
-        $this->prop = $val;
-    }
-
-    public function __debugInfo() {
-        return [
-            'propSquared' => $this->prop ** 2,
-        ];
-    }
-}
-
-var_dump(new C(42));
-```
-
-## Late static Binding
-
-Existe dois tipos de "Binding":
-
-- Early Binding (happens at compile time)
-- Late Binding (happens at runtime)
+Late static binding lets static methods and properties reference the called class instead of the class they are defined in.
 
 [Late Static Bindings](https://www.php.net/manual/en/language.oop5.late-static-bindings.php)
 
 ## Traits
 
-É uma maneira que o PHP implementa para reúso de código.
-
-Um grupo de métodos que podem ser inseridos dentro de classes.
-
-São definidas com a expressão `trait` seguido pelo nome e por um bloco de código, para utilizar uma trait dentro de uma classe utilize `use` seguido pelo nome da trait.
-
-Ex:
+Traits are used to reuse code in multiple classes.
 
 ```php
-<?php
-
-trait TraitA {
-    public function sayHello() {
-        echo 'Hello';
+trait LoggerTrait {
+    public function log(string $msg) {
+        echo $msg;
     }
 }
 
-trait TraitB {
-    public function sayWorld() {
-        echo 'World';
-    }
+class MyClass {
+    use LoggerTrait;
 }
-
-class MyHelloWorld
-{
-    use TraitA, TraitB; // A class can use multiple traits
-
-    public function sayHelloWorld() {
-        $this->sayHello();
-        echo ' ';
-        $this->sayWorld();
-        echo "!\n";
-    }
-}
-
-$myHelloWorld = new MyHelloWorld();
-$myHelloWorld->sayHelloWorld();
 ```
 
-## Anonymous classes
+## Anonymous Classes
 
-Usos das classes anônimas:
+Useful for short-lived classes or one-off objects:
+
+```php
+$logger = new class {
+    public function log($msg) {
+        echo $msg;
+    }
+};
+```
 
 ![Anonymous classes](img/anonymous.png)
+
+---
+
+This documentation serves as a study guide and personal reference for learning Object-Oriented Programming in PHP.
+
