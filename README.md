@@ -15,6 +15,9 @@ Here’s how the repository is structured:
 -   [`OOP-PHP`](https://github.com/DanielArrudas/Estudos-PHP/tree/OOP-PHP)  
     This branch will focus on **Object-Oriented Programming** in PHP — classes, inheritance, encapsulation, and more advanced concepts.
 
+- [`Docker`](https://github.com/DanielArrudas/Estudos-PHP/tree/Docker)
+    This branch is dedicated to learning how to use Docker to create and manage development environments for PHP applications.
+
 -   More branches may be added in the future as I continue exploring other areas of PHP, such as frameworks, testing, or design patterns.
 
 ---
@@ -45,6 +48,10 @@ git checkout Procedural-PHP
 
 ```bash
 git checkout OOP-PHP
+```
+
+```bash
+git checkout Docker
 ```
 
 3. **Follow the README of each branch** to explore the contents and run the examples.
