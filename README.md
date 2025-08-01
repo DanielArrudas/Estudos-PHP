@@ -1,4 +1,4 @@
-# Estudos-PHP
+# PHP-Studies
 
 This repository is dedicated to documenting everything I’m learning about **PHP**.  
 Each topic is organized into its own branch, allowing me to separate concepts and approaches clearly.
@@ -15,7 +15,7 @@ Here’s how the repository is structured:
 -   [`OOP-PHP`](https://github.com/DanielArrudas/Estudos-PHP/tree/OOP-PHP)  
     This branch will focus on **Object-Oriented Programming** in PHP — classes, inheritance, encapsulation, and more advanced concepts.
 
-- [`Docker`](https://github.com/DanielArrudas/Estudos-PHP/tree/Docker)
+- [`Docker`](https://github.com/DanielArrudas/Estudos-PHP/tree/Docker)  
     This branch is dedicated to learning how to use Docker to create and manage development environments for PHP applications.
 
 -   More branches may be added in the future as I continue exploring other areas of PHP, such as frameworks, testing, or design patterns.
