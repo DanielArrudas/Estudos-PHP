@@ -1,121 +1,115 @@
+
 # Docker
 
-This branch was created to document everything I’m learning about Docker with PHP.
+This branch was created to document everything I learn about Docker in PHP.
 
 ---
 
 ## 📚 Table of Contents
 
+- [Why Docker Instead of XAMPP?](#why-docker-instead-of-xampp)
+- [What is a Docker Image?](#what-is-a-docker-image)
+- [What is a Docker Container?](#what-is-a-docker-container)
+- [Dockerfile](#dockerfile)
+- [Docker Compose](#docker-compose)
+- [Running Multiple Containers](#running-multiple-containers)
+- [Conclusion](#conclusion)
+
 ---
 
-## Comparison with XAMPP
+## Why Docker Instead of XAMPP?
 
-XAMPP lacks many features and is not suitable for production use. This can lead to problems when your development environment differs from the production environment — what works locally might not work in production, and vice versa.
+XAMPP lacks many features and is not suitable for production. This can create discrepancies between your development and production environments. What works locally might not work in production, and vice versa.
 
-With Docker, you can ensure your local development environment closely matches the production setup.
+With Docker, you can ensure that your local development environment closely mirrors your production environment.
 
-Docker also allows you to work on multiple projects at the same time, even if they require different PHP versions.
+Docker also allows you to work on multiple projects at the same time, even if they require different versions of PHP.
 
-It lets you bundle your development environment into isolated, portable containers.
+It lets you bundle your development environment into isolated and portable containers.
 
-![alt text](img/image.png)
 
-You can have separate containers for the web server, PHP, database, etc.
+You can run separate containers for the web server, PHP, database, and more.
 
-Decoupling these services is beneficial because you can easily swap out containers individually, instead of dealing with a single, all-in-one environment.
+Decoupling services is a good practice. You can easily swap one container for another without interfering with the rest of your stack.
 
-A Docker container starts as a simple, minimal Linux machine with nothing installed by default for your application.
+---
 
-In the Dockerfile, you write instructions on how to build a Docker image. A Docker image is a **read-only executable package** that includes everything needed to run your application.
+## What is a Docker Image?
 
-Images are considered templates — you can't run an image directly, but you can use it as a base to create containers.
+A Docker container starts as a simple vanilla Linux machine with nothing installed.
 
-An image is a blueprint for a container.
+In the Dockerfile, you write instructions to build a Docker image. A Docker image is a read-only executable package that includes everything needed to run your application.
 
-An image must exist in order for docker to know what to build and how to build it.
+Images are considered templates: they cannot be run directly, but you can use them as a base to build your own containers.
 
-### Running Multiple Containers Simultaneously
+---
 
-A `docker-compose.yml` file manages multiple containers in a simple and unified way.
+## What is a Docker Container?
 
-## Docker Compose File
+A container is a runtime instance of a Docker image. It is a lightweight, standalone, executable package of software that includes everything needed to run a piece of software, including the code, runtime, libraries, and dependencies.
 
-no `docker-compose.yml` é onde coloca todos os componentes que serão usados, `services:` e cite os serviços
+Each container is isolated from others and from the host system, which improves security and stability.
 
-Não é bom colocar o nome padrão para os serviços, como "nginx", pois, se eventualmente estiver com otur nginx server rodando para outra aplicação se tornará ambíguo e não poderia colocar o mesmo nome.
+---
 
-A melhor coisa é nomear com algo que faça sentido, como o serviço que ele está perfomando 
+## Dockerfile
 
-Imagens estão localizados no registry, você pode ter o seu registry privado ou um registry centralizado
+The `Dockerfile` contains step-by-step instructions to create a Docker image.
 
-Se não especificar qual é o registry, o docker vai olhar no docker hub registry
+For example:
+```Dockerfile
+FROM php:8.1-apache
+COPY . /var/www/html/
+```
 
-```docker
+This Dockerfile creates a container using the official PHP image with Apache and copies your application files into the web server directory.
+
+---
+
+## Docker Compose
+
+`docker-compose.yml` is a configuration file that allows you to define and run multiple containers with a single command.
+
+Example:
+```yaml
+version: '3.8'
 services:
-    # nginx
-    web:
-        image: nginx:latest
-        ports:
-            - '80:80'
+  web:
+    image: php:8.1-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
 ```
 
-```docker
-docker compose up
-```
-
-The `docker compose up` command is used to build, create, and start the services defined in a docker-compose.yml file. This command orchestrates a multi-container Docker application, managing the lifecycle of all declared services, networks, and volumes.
-
-```docker
-docker ps
-```
-
-O comando acima é para ver quais containers estão em execução
-
-```docker
-docker compose ps
-```
-
-Para ver quais serviços estão em execução
-
-## PHP Dockerfile
-
-Há dois arquivos principais no Docker, já vimos o docker-compose.yaml file e agora vamos ver sobre o dockerfile, que é para a criação das imagens que é usado para a construção dos containers
-
-Vamos pegar uma imagem base do php e vamos customizar, criar a minha própria imagem baseado na imagem do PHP
-
-no Dockerfile é onde basicamente instala os componentes
-
-```docker
-docker build -t danielarrudas:php84 -f php/Dockerfile .
-```
-
-O comando acima fala para o docker qual a pasta que ele vai se basear para construir o docker, nesse caso, -t seria um apelido e -f o caminho para a pasta `/php/Dockerfile` e o . cita que seria todos os arquivos.
-
-Dockerfile:
-```docker
-FROM php:8.4.8-fpm-alpine
-
-RUN docker-php-ext-install pdo pdo_mysql
-```
-O comando `docker images` mostra quais imagens temos:
-
-
-| Repository | TAG | IMAGE ID | CREATED | SIZE |
-| ---------- | --- | -------- | ------- | ---- |
-| danielarrudas | php84 | ce368240e4f7 | 14 seconds ago | 133MB |
-| nginx | latest | 8e368240e4f7 | 8 days ago | 133MB |
+This example runs a PHP container and a MySQL container, and links them together for seamless development.
 
 ---
 
-## Nginx Configuration
+## Running Multiple Containers
 
-`docker exec -it php-studies-web-1 sh`
+Docker Compose simplifies the management of multiple containers. You can bring them up with:
 
-Docker executa um comando no meu container
--it significa "interactive", o que significa que posso interagir com meu container
+```bash
+docker-compose up -d
+```
 
-sh to shell my container
+And shut them down with:
 
-`cat /etc/nginx/conf.d/default.conf `
+```bash
+docker-compose down
+```
 
-`fastcgi_param`
+It’s a great way to ensure consistency and isolation across your entire development environment.
+
+---
+
+## Conclusion
+
+Docker helps you create consistent development environments, simplifies project setup, and allows scalable architecture using containers.
+
+Stay tuned as this documentation grows with more examples and advanced concepts!
