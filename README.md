@@ -540,3 +540,12 @@ Existe dois tipos de "Binding":
 - Late Binding (happens at runtime)
 
 [Late Static Bindings](https://www.php.net/manual/en/language.oop5.late-static-bindings.php)
+
+## Traits
+
+
+### insteadof
+
+Use insteadof to choose methods from different traits:
+
+[insteadof](https://www.w3schools.com/php/keyword_insteadof.asp)
